@@ -1,0 +1,212 @@
+[
+  {
+    "word": "ambiguous",
+    "phonetic": "/æmˈbɪɡjuəs/",
+    "en_def": "open to more than one interpretation; having a double meaning",
+    "zh_def": "模棱两可的；有歧义的",
+    "sentences": [
+      {"en": "The instructions were ambiguous, so nobody knew what to do.", "zh": "这些指示含糊不清，所以没人知道该怎么做。"},
+      {"en": "His ambiguous answer left everyone confused.", "zh": "他模棱两可的回答让所有人都感到困惑。"}
+    ]
+  },
+  {
+    "word": "meticulous",
+    "phonetic": "/məˈtɪkjʊləs/",
+    "en_def": "showing great attention to detail; very careful and precise",
+    "zh_def": "一丝不苟的；极为细心的",
+    "sentences": [
+      {"en": "She was meticulous in her preparation for the exam.", "zh": "她对考试的准备工作一丝不苟。"},
+      {"en": "The surgeon performed the operation with meticulous precision.", "zh": "外科医生以一丝不苟的精准度完成了手术。"}
+    ]
+  },
+  {
+    "word": "inevitable",
+    "phonetic": "/ɪnˈevɪtəbl/",
+    "en_def": "certain to happen; unable to be avoided or prevented",
+    "zh_def": "不可避免的；必然发生的",
+    "sentences": [
+      {"en": "Change is inevitable in a fast-moving industry.", "zh": "在快速发展的行业中，变革是不可避免的。"},
+      {"en": "It was inevitable that they would eventually disagree.", "zh": "他们最终产生分歧是不可避免的。"}
+    ]
+  },
+  {
+    "word": "eloquent",
+    "phonetic": "/ˈeləkwənt/",
+    "en_def": "fluent or persuasive in speaking or writing",
+    "zh_def": "雄辩的；有口才的；有说服力的",
+    "sentences": [
+      {"en": "She gave an eloquent speech that moved the audience.", "zh": "她发表了一篇感人的演讲，打动了观众。"},
+      {"en": "His writing is eloquent and full of passion.", "zh": "他的文章雄辩有力，充满激情。"}
+    ]
+  },
+  {
+    "word": "perseverance",
+    "phonetic": "/ˌpɜːsɪˈvɪərəns/",
+    "en_def": "continued effort and determination despite difficulty or delay",
+    "zh_def": "坚持不懈；毅力；锲而不舍",
+    "sentences": [
+      {"en": "Success requires perseverance and hard work.", "zh": "成功需要坚持不懈和努力工作。"},
+      {"en": "Her perseverance finally paid off when she got the job.", "zh": "她的坚持不懈终于在她得到这份工作时得到了回报。"}
+    ]
+  },
+  {
+    "word": "spontaneous",
+    "phonetic": "/spɒnˈteɪniəs/",
+    "en_def": "performed or occurring as a result of a sudden impulse, without planning",
+    "zh_def": "自发的；即兴的；不由自主的",
+    "sentences": [
+      {"en": "The audience broke into spontaneous applause.", "zh": "观众自发地鼓起了掌声。"},
+      {"en": "Their relationship felt natural and spontaneous.", "zh": "他们的关系感觉自然而不做作。"}
+    ]
+  },
+  {
+    "word": "eloquence",
+    "phonetic": "/ˈeləkwəns/",
+    "en_def": "the practice of using language in a fluent, forcible and apt way",
+    "zh_def": "雄辩；口才；说服力",
+    "sentences": [
+      {"en": "The lawyer was known for her eloquence in court.", "zh": "这位律师以其在法庭上的雄辩口才而闻名。"},
+      {"en": "His eloquence won over even the harshest critics.", "zh": "他的口才甚至赢得了最严厉批评者的认可。"}
+    ]
+  },
+  {
+    "word": "pragmatic",
+    "phonetic": "/præɡˈmætɪk/",
+    "en_def": "dealing with things sensibly and realistically in a practical way",
+    "zh_def": "务实的；实用的；注重实效的",
+    "sentences": [
+      {"en": "We need a pragmatic approach to solve this problem.", "zh": "我们需要务实的方法来解决这个问题。"},
+      {"en": "She is a pragmatic leader who focuses on results.", "zh": "她是一位注重结果的务实领导者。"}
+    ]
+  },
+  {
+    "word": "contemplation",
+    "phonetic": "/ˌkɒntəmˈpleɪʃn/",
+    "en_def": "the action of looking at something thoughtfully for a long time",
+    "zh_def": "沉思；深思；冥想",
+    "sentences": [
+      {"en": "He sat in quiet contemplation by the lake.", "zh": "他在湖边静静地沉思。"},
+      {"en": "The decision was made after long contemplation.", "zh": "这个决定是经过长时间深思后做出的。"}
+    ]
+  },
+  {
+    "word": "resilience",
+    "phonetic": "/rɪˈzɪliəns/",
+    "en_def": "the capacity to recover quickly from difficulties; toughness",
+    "zh_def": "韧性；恢复力；适应力",
+    "sentences": [
+      {"en": "The community showed remarkable resilience after the disaster.", "zh": "这个社区在灾难后表现出了非凡的韧性。"},
+      {"en": "Resilience is one of the most important qualities for success.", "zh": "韧性是成功最重要的品质之一。"}
+    ]
+  },
+  {
+    "word": "facade",
+    "phonetic": "/fəˈsɑːd/",
+    "en_def": "an outward appearance that is maintained to conceal a less pleasant reality",
+    "zh_def": "外表；表象；（建筑物的）正面",
+    "sentences": [
+      {"en": "Behind his cheerful facade, he was deeply unhappy.", "zh": "在他快乐的外表背后，他内心深感痛苦。"},
+      {"en": "The company maintained a facade of stability.", "zh": "公司维持着一种稳定的表象。"}
+    ]
+  },
+  {
+    "word": "proficient",
+    "phonetic": "/prəˈfɪʃnt/",
+    "en_def": "competent or skilled in doing or using something",
+    "zh_def": "熟练的；精通的；擅长的",
+    "sentences": [
+      {"en": "She became proficient in Spanish after two years of study.", "zh": "经过两年的学习，她的西班牙语变得很熟练。"},
+      {"en": "He is proficient in multiple programming languages.", "zh": "他精通多种编程语言。"}
+    ]
+  },
+  {
+    "word": "diligent",
+    "phonetic": "/ˈdɪlɪdʒənt/",
+    "en_def": "having or showing care and conscientiousness in one's work",
+    "zh_def": "勤奋的；勤勉的；孜孜不倦的",
+    "sentences": [
+      {"en": "A diligent student always reviews notes after class.", "zh": "勤奋的学生总是在课后复习笔记。"},
+      {"en": "Her diligent work ethic earned her a promotion.", "zh": "她勤奋的工作态度为她赢得了晋升。"}
+    ]
+  },
+  {
+    "word": "abstract",
+    "phonetic": "/ˈæbstrækt/",
+    "en_def": "existing in thought or as an idea but not having a physical existence",
+    "zh_def": "抽象的；难以理解的；（艺术）抽象派的",
+    "sentences": [
+      {"en": "Mathematics deals with abstract concepts.", "zh": "数学处理抽象概念。"},
+      {"en": "The painting is abstract but emotionally powerful.", "zh": "这幅画是抽象的，但情感上很有力量。"}
+    ]
+  },
+  {
+    "word": "consensus",
+    "phonetic": "/kənˈsensəs/",
+    "en_def": "a general agreement among a group of people",
+    "zh_def": "共识；一致意见；共同意见",
+    "sentences": [
+      {"en": "The team reached a consensus after hours of discussion.", "zh": "经过数小时的讨论，团队达成了共识。"},
+      {"en": "There is no consensus on how to solve the climate crisis.", "zh": "对于如何解决气候危机，目前没有共识。"}
+    ]
+  },
+  {
+    "word": "skeptical",
+    "phonetic": "/ˈskeptɪkl/",
+    "en_def": "not easily convinced; having doubts or reservations",
+    "zh_def": "怀疑的；持怀疑态度的",
+    "sentences": [
+      {"en": "I am skeptical about his claims.", "zh": "我对他的说法持怀疑态度。"},
+      {"en": "Scientists are always skeptical until evidence is provided.", "zh": "在提供证据之前，科学家们总是持怀疑态度。"}
+    ]
+  },
+  {
+    "word": "tenacious",
+    "phonetic": "/tɪˈneɪʃəs/",
+    "en_def": "tending to keep a firm hold; not readily giving up",
+    "zh_def": "坚韧的；顽强的；执着的",
+    "sentences": [
+      {"en": "She was tenacious in pursuing her goals.", "zh": "她在追求目标方面非常执着。"},
+      {"en": "The tenacious athlete refused to quit despite injuries.", "zh": "这位顽强的运动员尽管受伤，仍拒绝放弃。"}
+    ]
+  },
+  {
+    "word": "eloquent",
+    "phonetic": "/ˈeləkwənt/",
+    "en_def": "fluent or persuasive in speaking or writing",
+    "zh_def": "雄辩的；有口才的",
+    "sentences": [
+      {"en": "The politician delivered an eloquent speech.", "zh": "这位政治家发表了一篇雄辩的演讲。"},
+      {"en": "Her eloquent writing style impressed the judges.", "zh": "她雄辩的写作风格给评委留下了深刻印象。"}
+    ]
+  },
+  {
+    "word": "alleviate",
+    "phonetic": "/əˈliːvieɪt/",
+    "en_def": "to make (suffering, deficiency, or a problem) less severe",
+    "zh_def": "减轻；缓解；缓和",
+    "sentences": [
+      {"en": "The medicine helped alleviate his pain.", "zh": "这种药帮助减轻了他的疼痛。"},
+      {"en": "Exercise can alleviate symptoms of depression.", "zh": "锻炼可以缓解抑郁症状。"}
+    ]
+  },
+  {
+    "word": "imperative",
+    "phonetic": "/ɪmˈperətɪv/",
+    "en_def": "of vital importance; crucial; giving an authoritative command",
+    "zh_def": "必要的；紧迫的；命令式的",
+    "sentences": [
+      {"en": "It is imperative that we act now.", "zh": "我们必须立即行动。"},
+      {"en": "Meeting the deadline is imperative for the project.", "zh": "按时完成截止日期对项目来说至关重要。"}
+    ]
+  },
+  {
+    "word": "nuance",
+    "phonetic": "/ˈnjuːɑːns/",
+    "en_def": "a subtle difference in meaning, expression, or sound",
+    "zh_def": "细微差别；细微之处；微妙之处",
+    "sentences": [
+      {"en": "He appreciated the nuance in her argument.", "zh": "他欣赏她论点中的细微差别。"},
+      {"en": "Understanding cultural nuances is important when traveling.", "zh": "旅行时了解文化上的细微差异很重要。"}
+    ]
+  }
+]

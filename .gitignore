@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.suo
+*.user
+
+# User data (personal schedule / memo content)
+data/calendar.json
+data/memo.json
+data/pomodoro.json
+data/settings.json
+data/word_progress.json
+
+# Keep words.json and templates.json as they are app content, not user data
+# data/words.json  ← tracked
+# data/templates.json  ← tracked
+
+# Misc
+*.log
+Thumbs.db

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "ea69f9f5",
+    "name": "默认模板",
+    "segments": [
+      {
+        "duration_min": 25,
+        "is_break": false
+      },
+      {
+        "duration_min": 5,
+        "is_break": true
+      },
+      {
+        "duration_min": 25,
+        "is_break": false
+      },
+      {
+        "duration_min": 5,
+        "is_break": true
+      },
+      {
+        "duration_min": 25,
+        "is_break": false
+      },
+      {
+        "duration_min": 15,
+        "is_break": true
+      }
+    ]
+  }
+]
