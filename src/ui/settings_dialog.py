@@ -4,6 +4,11 @@ Settings dialog: alert modes, startup, template editor, snooze default.
 
 import winreg
 import sys
+import json
+import shutil
+import zipfile
+import tempfile
+from pathlib import Path
 from PyQt6.QtWidgets import (
     QDialog, QTabWidget, QWidget, QFormLayout, QVBoxLayout,
     QHBoxLayout, QCheckBox, QLineEdit, QPushButton,
@@ -134,6 +139,22 @@ class SettingsDialog(QDialog):
         qc_lay.addStretch()
         tabs.addTab(qc_tab, "象限颜色")
 
+        # ---------- Tab: Data ----------
+        data_tab = QWidget()
+        data_lay = QVBoxLayout(data_tab)
+        data_lay.setSpacing(12)
+        data_lay.addWidget(QLabel("导出：将设置、日历、备忘录、番茄记录、单词进度打包为 .zip"))
+        export_btn = QPushButton("📦  导出所有数据…")
+        export_btn.clicked.connect(self._export_data)
+        data_lay.addWidget(export_btn)
+        data_lay.addSpacing(8)
+        data_lay.addWidget(QLabel("导入：从之前导出的 .zip 还原所有数据（当前数据会被覆盖）"))
+        import_btn = QPushButton("📂  导入所有数据…")
+        import_btn.clicked.connect(self._import_data)
+        data_lay.addWidget(import_btn)
+        data_lay.addStretch()
+        tabs.addTab(data_tab, "数据")
+
         # ---------- OK / Cancel ----------
         btns = QDialogButtonBox(
             QDialogButtonBox.StandardButton.Ok |
@@ -157,6 +178,50 @@ class SettingsDialog(QDialog):
             self._q_color_btns[idx].setStyleSheet(
                 f"background:{hex_color}; border:1px solid #999; border-radius:4px;"
             )
+
+    def _export_data(self):
+        dst, _ = QFileDialog.getSaveFileName(
+            self, "导出数据", "MemoPomo-backup.zip", "ZIP 文件 (*.zip)"
+        )
+        if not dst:
+            return
+        from src.core.store import DATA_DIR
+        files = [
+            "settings.json", "memo.json", "calendar.json",
+            "pomodoro.json", "templates.json",
+            "word_progress.json", "words.json",
+        ]
+        try:
+            with zipfile.ZipFile(dst, "w", zipfile.ZIP_DEFLATED) as zf:
+                for name in files:
+                    p = DATA_DIR / name
+                    if p.exists():
+                        zf.write(str(p), name)
+            QMessageBox.information(self, "导出完成", f"数据已保存到：\n{dst}")
+        except Exception as e:
+            QMessageBox.critical(self, "导出失败", str(e))
+
+    def _import_data(self):
+        src, _ = QFileDialog.getOpenFileName(
+            self, "导入数据", "", "ZIP 文件 (*.zip)"
+        )
+        if not src:
+            return
+        ret = QMessageBox.warning(
+            self, "确认导入",
+            "导入将覆盖当前所有数据，操作不可撤销。\n确定继续吗？",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.Cancel,
+        )
+        if ret != QMessageBox.StandardButton.Yes:
+            return
+        from src.core.store import DATA_DIR
+        try:
+            with zipfile.ZipFile(src, "r") as zf:
+                zf.extractall(str(DATA_DIR))
+            self._store.load_all()
+            QMessageBox.information(self, "导入完成", "数据已还原，请重启软件以刷新界面。")
+        except Exception as e:
+            QMessageBox.critical(self, "导入失败", str(e))
 
     def _apply(self):
         s = self._store.settings

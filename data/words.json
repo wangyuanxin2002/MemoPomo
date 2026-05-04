@@ -1,5 +1,75 @@
 [
   {
+    "word": "abandon",
+    "phonetic": "/əˈbændən/",
+    "en_def": "to leave someone or something permanently; give up completely",
+    "zh_def": "抛弃；放弃；遗弃",
+    "sentences": [
+      {"en": "They had to abandon the rescue mission due to bad weather.", "zh": "由于恶劣天气，他们不得不放弃救援任务。"},
+      {"en": "She abandoned her plan to study abroad.", "zh": "她放弃了出国留学的计划。"}
+    ]
+  },
+  {
+    "word": "abstract",
+    "phonetic": "/ˈæbstrækt/",
+    "en_def": "existing in thought or as an idea but not having a physical existence",
+    "zh_def": "抽象的；难以理解的",
+    "sentences": [
+      {"en": "Mathematics deals with abstract concepts.", "zh": "数学处理抽象概念。"},
+      {"en": "The painting is abstract but emotionally powerful.", "zh": "这幅画是抽象的，但情感上很有力量。"}
+    ]
+  },
+  {
+    "word": "accelerate",
+    "phonetic": "/əkˈseləreɪt/",
+    "en_def": "to begin to move more quickly; to make something happen sooner",
+    "zh_def": "加速；促进；加快",
+    "sentences": [
+      {"en": "The government accelerated its economic reform.", "zh": "政府加快了经济改革的步伐。"},
+      {"en": "Technology has accelerated social change.", "zh": "技术加速了社会变革。"}
+    ]
+  },
+  {
+    "word": "accommodate",
+    "phonetic": "/əˈkɒmədeɪt/",
+    "en_def": "to provide space or lodging for; to adapt to the needs of",
+    "zh_def": "容纳；适应；为……提供住宿",
+    "sentences": [
+      {"en": "The hotel can accommodate up to 500 guests.", "zh": "这家酒店可以容纳多达500位客人。"},
+      {"en": "We need to accommodate different learning styles.", "zh": "我们需要适应不同的学习方式。"}
+    ]
+  },
+  {
+    "word": "accumulate",
+    "phonetic": "/əˈkjuːmjəleɪt/",
+    "en_def": "to gather or collect something over a period of time",
+    "zh_def": "积累；积聚；堆积",
+    "sentences": [
+      {"en": "He accumulated a great deal of knowledge over the years.", "zh": "多年来他积累了大量知识。"},
+      {"en": "Dust accumulated on the shelves.", "zh": "灰尘在架子上积聚。"}
+    ]
+  },
+  {
+    "word": "acknowledge",
+    "phonetic": "/əkˈnɒlɪdʒ/",
+    "en_def": "to accept or admit the existence or truth of something",
+    "zh_def": "承认；确认；致谢",
+    "sentences": [
+      {"en": "He acknowledged his mistake in front of everyone.", "zh": "他在众人面前承认了自己的错误。"},
+      {"en": "The company acknowledged receipt of the application.", "zh": "公司确认收到了申请。"}
+    ]
+  },
+  {
+    "word": "alleviate",
+    "phonetic": "/əˈliːvieɪt/",
+    "en_def": "to make suffering, deficiency, or a problem less severe",
+    "zh_def": "减轻；缓解；缓和",
+    "sentences": [
+      {"en": "The medicine helped alleviate his pain.", "zh": "这种药帮助减轻了他的疼痛。"},
+      {"en": "Exercise can alleviate symptoms of depression.", "zh": "锻炼可以缓解抑郁症状。"}
+    ]
+  },
+  {
     "word": "ambiguous",
     "phonetic": "/æmˈbɪɡjuəs/",
     "en_def": "open to more than one interpretation; having a double meaning",
@@ -10,113 +80,193 @@
     ]
   },
   {
-    "word": "meticulous",
-    "phonetic": "/məˈtɪkjʊləs/",
-    "en_def": "showing great attention to detail; very careful and precise",
-    "zh_def": "一丝不苟的；极为细心的",
+    "word": "anticipate",
+    "phonetic": "/ænˈtɪsɪpeɪt/",
+    "en_def": "to expect or predict something; to look forward to",
+    "zh_def": "预期；预测；期望",
     "sentences": [
-      {"en": "She was meticulous in her preparation for the exam.", "zh": "她对考试的准备工作一丝不苟。"},
-      {"en": "The surgeon performed the operation with meticulous precision.", "zh": "外科医生以一丝不苟的精准度完成了手术。"}
+      {"en": "We did not anticipate such a strong response.", "zh": "我们没有预料到如此强烈的反应。"},
+      {"en": "Scientists anticipate further climate changes.", "zh": "科学家预测气候将进一步变化。"}
     ]
   },
   {
-    "word": "inevitable",
-    "phonetic": "/ɪnˈevɪtəbl/",
-    "en_def": "certain to happen; unable to be avoided or prevented",
-    "zh_def": "不可避免的；必然发生的",
+    "word": "appreciate",
+    "phonetic": "/əˈpriːʃieɪt/",
+    "en_def": "to recognize the full worth of; to be grateful for",
+    "zh_def": "欣赏；感激；理解",
     "sentences": [
-      {"en": "Change is inevitable in a fast-moving industry.", "zh": "在快速发展的行业中，变革是不可避免的。"},
-      {"en": "It was inevitable that they would eventually disagree.", "zh": "他们最终产生分歧是不可避免的。"}
+      {"en": "I really appreciate your help.", "zh": "我非常感激你的帮助。"},
+      {"en": "She appreciates the beauty of classical music.", "zh": "她欣赏古典音乐之美。"}
     ]
   },
   {
-    "word": "eloquent",
-    "phonetic": "/ˈeləkwənt/",
-    "en_def": "fluent or persuasive in speaking or writing",
-    "zh_def": "雄辩的；有口才的；有说服力的",
+    "word": "appropriate",
+    "phonetic": "/əˈprəʊpriət/",
+    "en_def": "suitable or proper in the circumstances",
+    "zh_def": "适当的；合适的；恰当的",
     "sentences": [
-      {"en": "She gave an eloquent speech that moved the audience.", "zh": "她发表了一篇感人的演讲，打动了观众。"},
-      {"en": "His writing is eloquent and full of passion.", "zh": "他的文章雄辩有力，充满激情。"}
+      {"en": "It is not appropriate to use your phone during class.", "zh": "上课期间使用手机是不恰当的。"},
+      {"en": "She chose an appropriate time to discuss the issue.", "zh": "她选择了一个合适的时机来讨论这个问题。"}
     ]
   },
   {
-    "word": "perseverance",
-    "phonetic": "/ˌpɜːsɪˈvɪərəns/",
-    "en_def": "continued effort and determination despite difficulty or delay",
-    "zh_def": "坚持不懈；毅力；锲而不舍",
+    "word": "assume",
+    "phonetic": "/əˈsjuːm/",
+    "en_def": "to suppose something to be true without proof; to take on a role",
+    "zh_def": "假设；假定；承担",
     "sentences": [
-      {"en": "Success requires perseverance and hard work.", "zh": "成功需要坚持不懈和努力工作。"},
-      {"en": "Her perseverance finally paid off when she got the job.", "zh": "她的坚持不懈终于在她得到这份工作时得到了回报。"}
+      {"en": "Don't assume you know the answer.", "zh": "不要以为你知道答案。"},
+      {"en": "She assumed responsibility for the project.", "zh": "她承担了这个项目的责任。"}
     ]
   },
   {
-    "word": "spontaneous",
-    "phonetic": "/spɒnˈteɪniəs/",
-    "en_def": "performed or occurring as a result of a sudden impulse, without planning",
-    "zh_def": "自发的；即兴的；不由自主的",
+    "word": "attribute",
+    "phonetic": "/əˈtrɪbjuːt/",
+    "en_def": "to regard something as being caused by; a quality or feature",
+    "zh_def": "归因于；属性；特质",
     "sentences": [
-      {"en": "The audience broke into spontaneous applause.", "zh": "观众自发地鼓起了掌声。"},
-      {"en": "Their relationship felt natural and spontaneous.", "zh": "他们的关系感觉自然而不做作。"}
+      {"en": "He attributed his success to hard work.", "zh": "他将自己的成功归因于努力工作。"},
+      {"en": "Kindness is her most admirable attribute.", "zh": "善良是她最令人钦佩的品质。"}
     ]
   },
   {
-    "word": "eloquence",
-    "phonetic": "/ˈeləkwəns/",
-    "en_def": "the practice of using language in a fluent, forcible and apt way",
-    "zh_def": "雄辩；口才；说服力",
+    "word": "beneficial",
+    "phonetic": "/ˌbenɪˈfɪʃl/",
+    "en_def": "favorable or advantageous; resulting in good",
+    "zh_def": "有益的；有利的；有帮助的",
     "sentences": [
-      {"en": "The lawyer was known for her eloquence in court.", "zh": "这位律师以其在法庭上的雄辩口才而闻名。"},
-      {"en": "His eloquence won over even the harshest critics.", "zh": "他的口才甚至赢得了最严厉批评者的认可。"}
+      {"en": "Regular exercise is beneficial to your health.", "zh": "定期锻炼对你的健康有益。"},
+      {"en": "The new policy proved beneficial for small businesses.", "zh": "新政策对小企业来说证明是有利的。"}
     ]
   },
   {
-    "word": "pragmatic",
-    "phonetic": "/præɡˈmætɪk/",
-    "en_def": "dealing with things sensibly and realistically in a practical way",
-    "zh_def": "务实的；实用的；注重实效的",
+    "word": "circumstances",
+    "phonetic": "/ˈsɜːkəmstænsɪz/",
+    "en_def": "the conditions that affect a situation, event, or action",
+    "zh_def": "情况；环境；境况",
     "sentences": [
-      {"en": "We need a pragmatic approach to solve this problem.", "zh": "我们需要务实的方法来解决这个问题。"},
-      {"en": "She is a pragmatic leader who focuses on results.", "zh": "她是一位注重结果的务实领导者。"}
+      {"en": "Under the circumstances, we had no choice.", "zh": "在这种情况下，我们别无选择。"},
+      {"en": "The circumstances of his birth were unusual.", "zh": "他出生时的情况非同寻常。"}
+    ]
+  },
+  {
+    "word": "cognitive",
+    "phonetic": "/ˈkɒɡnətɪv/",
+    "en_def": "relating to mental processes of understanding and knowing",
+    "zh_def": "认知的；认识的",
+    "sentences": [
+      {"en": "Children develop cognitive skills through play.", "zh": "孩子们通过游戏发展认知技能。"},
+      {"en": "The research focuses on cognitive development in early childhood.", "zh": "这项研究关注幼儿的认知发展。"}
+    ]
+  },
+  {
+    "word": "commit",
+    "phonetic": "/kəˈmɪt/",
+    "en_def": "to dedicate oneself; to carry out or perpetrate an action",
+    "zh_def": "承诺；致力于；犯（罪）",
+    "sentences": [
+      {"en": "She committed herself to finishing the project.", "zh": "她致力于完成这个项目。"},
+      {"en": "He committed several errors in his report.", "zh": "他在报告中犯了几个错误。"}
+    ]
+  },
+  {
+    "word": "competent",
+    "phonetic": "/ˈkɒmpɪtənt/",
+    "en_def": "having the necessary ability, knowledge, or skill to do something successfully",
+    "zh_def": "有能力的；胜任的；能干的",
+    "sentences": [
+      {"en": "We need a competent manager for this project.", "zh": "我们需要一位有能力的经理来负责这个项目。"},
+      {"en": "She is highly competent in her field.", "zh": "她在自己的领域非常能干。"}
+    ]
+  },
+  {
+    "word": "consensus",
+    "phonetic": "/kənˈsensəs/",
+    "en_def": "a general agreement among a group of people",
+    "zh_def": "共识；一致意见",
+    "sentences": [
+      {"en": "The team reached a consensus after hours of discussion.", "zh": "经过数小时的讨论，团队达成了共识。"},
+      {"en": "There is no consensus on how to solve the climate crisis.", "zh": "对于如何解决气候危机，目前没有共识。"}
+    ]
+  },
+  {
+    "word": "consequence",
+    "phonetic": "/ˈkɒnsɪkwəns/",
+    "en_def": "a result or effect of an action or condition",
+    "zh_def": "后果；结果；影响",
+    "sentences": [
+      {"en": "You must face the consequences of your actions.", "zh": "你必须面对你行为的后果。"},
+      {"en": "Global warming is a consequence of human activity.", "zh": "全球变暖是人类活动的后果。"}
+    ]
+  },
+  {
+    "word": "contemplate",
+    "phonetic": "/ˈkɒntəmpleɪt/",
+    "en_def": "to think about something carefully for a long time",
+    "zh_def": "沉思；深思；考虑",
+    "sentences": [
+      {"en": "He sat quietly contemplating his next move.", "zh": "他静静地坐着，沉思自己的下一步行动。"},
+      {"en": "She contemplated changing her career.", "zh": "她考虑改变自己的职业。"}
     ]
   },
   {
     "word": "contemplation",
     "phonetic": "/ˌkɒntəmˈpleɪʃn/",
-    "en_def": "the action of looking at something thoughtfully for a long time",
-    "zh_def": "沉思；深思；冥想",
+    "en_def": "deep reflective thought; the action of looking thoughtfully",
+    "zh_def": "沉思；冥想；深思",
     "sentences": [
       {"en": "He sat in quiet contemplation by the lake.", "zh": "他在湖边静静地沉思。"},
       {"en": "The decision was made after long contemplation.", "zh": "这个决定是经过长时间深思后做出的。"}
     ]
   },
   {
-    "word": "resilience",
-    "phonetic": "/rɪˈzɪliəns/",
-    "en_def": "the capacity to recover quickly from difficulties; toughness",
-    "zh_def": "韧性；恢复力；适应力",
+    "word": "contribute",
+    "phonetic": "/kənˈtrɪbjuːt/",
+    "en_def": "to give something to help achieve or provide something",
+    "zh_def": "贡献；捐献；有助于",
     "sentences": [
-      {"en": "The community showed remarkable resilience after the disaster.", "zh": "这个社区在灾难后表现出了非凡的韧性。"},
-      {"en": "Resilience is one of the most important qualities for success.", "zh": "韧性是成功最重要的品质之一。"}
+      {"en": "Everyone should contribute to protecting the environment.", "zh": "每个人都应该为保护环境做出贡献。"},
+      {"en": "Her research contributed greatly to the field.", "zh": "她的研究对该领域做出了重大贡献。"}
     ]
   },
   {
-    "word": "facade",
-    "phonetic": "/fəˈsɑːd/",
-    "en_def": "an outward appearance that is maintained to conceal a less pleasant reality",
-    "zh_def": "外表；表象；（建筑物的）正面",
+    "word": "controversial",
+    "phonetic": "/ˌkɒntrəˈvɜːʃl/",
+    "en_def": "giving rise to public disagreement; debatable",
+    "zh_def": "有争议的；引起争论的",
     "sentences": [
-      {"en": "Behind his cheerful facade, he was deeply unhappy.", "zh": "在他快乐的外表背后，他内心深感痛苦。"},
-      {"en": "The company maintained a facade of stability.", "zh": "公司维持着一种稳定的表象。"}
+      {"en": "The new law is highly controversial.", "zh": "这项新法律极具争议。"},
+      {"en": "His controversial remarks sparked widespread debate.", "zh": "他有争议的言论引发了广泛讨论。"}
     ]
   },
   {
-    "word": "proficient",
-    "phonetic": "/prəˈfɪʃnt/",
-    "en_def": "competent or skilled in doing or using something",
-    "zh_def": "熟练的；精通的；擅长的",
+    "word": "crucial",
+    "phonetic": "/ˈkruːʃl/",
+    "en_def": "decisive or critical, especially in the success or failure of something",
+    "zh_def": "关键的；至关重要的；决定性的",
     "sentences": [
-      {"en": "She became proficient in Spanish after two years of study.", "zh": "经过两年的学习，她的西班牙语变得很熟练。"},
-      {"en": "He is proficient in multiple programming languages.", "zh": "他精通多种编程语言。"}
+      {"en": "It is crucial to act quickly in an emergency.", "zh": "在紧急情况下迅速行动至关重要。"},
+      {"en": "Communication is crucial to any successful team.", "zh": "沟通对任何成功的团队都是关键。"}
+    ]
+  },
+  {
+    "word": "cultivate",
+    "phonetic": "/ˈkʌltɪveɪt/",
+    "en_def": "to prepare and use land for growing crops; to develop a skill or relationship",
+    "zh_def": "培养；耕种；培育",
+    "sentences": [
+      {"en": "She cultivated a love of reading from a young age.", "zh": "她从小就培养了对阅读的热爱。"},
+      {"en": "Farmers cultivate the land every spring.", "zh": "农民每年春天耕种土地。"}
+    ]
+  },
+  {
+    "word": "demonstrate",
+    "phonetic": "/ˈdemənstreɪt/",
+    "en_def": "to clearly show the existence of something by giving proof or evidence",
+    "zh_def": "证明；展示；示范",
+    "sentences": [
+      {"en": "The experiment demonstrates how light travels.", "zh": "实验展示了光是如何传播的。"},
+      {"en": "She demonstrated great courage under pressure.", "zh": "她在压力下展现出了极大的勇气。"}
     ]
   },
   {
@@ -130,23 +280,453 @@
     ]
   },
   {
-    "word": "abstract",
-    "phonetic": "/ˈæbstrækt/",
-    "en_def": "existing in thought or as an idea but not having a physical existence",
-    "zh_def": "抽象的；难以理解的；（艺术）抽象派的",
+    "word": "distinguish",
+    "phonetic": "/dɪˈstɪŋɡwɪʃ/",
+    "en_def": "to recognize or treat as different; to make someone or something special",
+    "zh_def": "区分；辨别；使杰出",
     "sentences": [
-      {"en": "Mathematics deals with abstract concepts.", "zh": "数学处理抽象概念。"},
-      {"en": "The painting is abstract but emotionally powerful.", "zh": "这幅画是抽象的，但情感上很有力量。"}
+      {"en": "Can you distinguish between the two colors?", "zh": "你能区分这两种颜色吗？"},
+      {"en": "He distinguished himself as an expert in the field.", "zh": "他在该领域以专家身份脱颖而出。"}
     ]
   },
   {
-    "word": "consensus",
-    "phonetic": "/kənˈsensəs/",
-    "en_def": "a general agreement among a group of people",
-    "zh_def": "共识；一致意见；共同意见",
+    "word": "diverse",
+    "phonetic": "/daɪˈvɜːs/",
+    "en_def": "showing a great deal of variety; very different",
+    "zh_def": "多样的；多元化的；不同的",
     "sentences": [
-      {"en": "The team reached a consensus after hours of discussion.", "zh": "经过数小时的讨论，团队达成了共识。"},
-      {"en": "There is no consensus on how to solve the climate crisis.", "zh": "对于如何解决气候危机，目前没有共识。"}
+      {"en": "The city has a diverse population.", "zh": "这座城市拥有多元化的人口。"},
+      {"en": "She has diverse interests including music and science.", "zh": "她有多样的兴趣，包括音乐和科学。"}
+    ]
+  },
+  {
+    "word": "eliminate",
+    "phonetic": "/ɪˈlɪmɪneɪt/",
+    "en_def": "to completely remove or get rid of something",
+    "zh_def": "消除；排除；淘汰",
+    "sentences": [
+      {"en": "We need to eliminate waste in the production process.", "zh": "我们需要消除生产过程中的浪费。"},
+      {"en": "The team was eliminated in the first round.", "zh": "该团队在第一轮就被淘汰了。"}
+    ]
+  },
+  {
+    "word": "eloquent",
+    "phonetic": "/ˈeləkwənt/",
+    "en_def": "fluent or persuasive in speaking or writing",
+    "zh_def": "雄辩的；有口才的；有说服力的",
+    "sentences": [
+      {"en": "She gave an eloquent speech that moved the audience.", "zh": "她发表了一篇感人的演讲，打动了观众。"},
+      {"en": "His writing is eloquent and full of passion.", "zh": "他的文章雄辩有力，充满激情。"}
+    ]
+  },
+  {
+    "word": "emerge",
+    "phonetic": "/ɪˈmɜːdʒ/",
+    "en_def": "to become known or apparent; to come out from a place",
+    "zh_def": "出现；浮现；出来",
+    "sentences": [
+      {"en": "New technologies are emerging every day.", "zh": "每天都有新技术涌现。"},
+      {"en": "The sun emerged from behind the clouds.", "zh": "太阳从云层后面出现了。"}
+    ]
+  },
+  {
+    "word": "emphasize",
+    "phonetic": "/ˈemfəsaɪz/",
+    "en_def": "to give special importance or attention to something",
+    "zh_def": "强调；着重；重视",
+    "sentences": [
+      {"en": "The teacher emphasized the importance of practice.", "zh": "老师强调了练习的重要性。"},
+      {"en": "He emphasized that safety comes first.", "zh": "他强调安全第一。"}
+    ]
+  },
+  {
+    "word": "enhance",
+    "phonetic": "/ɪnˈhɑːns/",
+    "en_def": "to intensify, increase, or further improve the quality or value of something",
+    "zh_def": "增强；提高；改善",
+    "sentences": [
+      {"en": "Regular reading enhances your vocabulary.", "zh": "定期阅读可以提高你的词汇量。"},
+      {"en": "The new features enhance the user experience.", "zh": "新功能改善了用户体验。"}
+    ]
+  },
+  {
+    "word": "enormous",
+    "phonetic": "/ɪˈnɔːməs/",
+    "en_def": "very large in size, quantity, or extent",
+    "zh_def": "巨大的；庞大的；极大的",
+    "sentences": [
+      {"en": "The project requires an enormous amount of funding.", "zh": "该项目需要大量资金。"},
+      {"en": "She made an enormous contribution to science.", "zh": "她对科学做出了巨大贡献。"}
+    ]
+  },
+  {
+    "word": "establish",
+    "phonetic": "/ɪˈstæblɪʃ/",
+    "en_def": "to set up on a firm or permanent basis; to prove",
+    "zh_def": "建立；创立；确立",
+    "sentences": [
+      {"en": "The company was established in 1990.", "zh": "该公司成立于1990年。"},
+      {"en": "Scientists have established a link between diet and health.", "zh": "科学家已经确立了饮食与健康之间的联系。"}
+    ]
+  },
+  {
+    "word": "evaluate",
+    "phonetic": "/ɪˈvæljueɪt/",
+    "en_def": "to form an idea of the amount, number, or value of; to assess",
+    "zh_def": "评估；评价；评定",
+    "sentences": [
+      {"en": "Teachers evaluate students' progress regularly.", "zh": "老师定期评估学生的进步。"},
+      {"en": "We need to evaluate the risks before proceeding.", "zh": "在继续之前，我们需要评估风险。"}
+    ]
+  },
+  {
+    "word": "evident",
+    "phonetic": "/ˈevɪdənt/",
+    "en_def": "plain or obvious; clearly seen or understood",
+    "zh_def": "明显的；显然的；明白的",
+    "sentences": [
+      {"en": "It was evident that she was upset.", "zh": "很明显她很难过。"},
+      {"en": "The improvement in his work is evident.", "zh": "他工作的进步是显而易见的。"}
+    ]
+  },
+  {
+    "word": "exceed",
+    "phonetic": "/ɪkˈsiːd/",
+    "en_def": "to be greater than a number or amount; to go beyond a limit",
+    "zh_def": "超过；超出；胜过",
+    "sentences": [
+      {"en": "The cost exceeded our budget.", "zh": "费用超出了我们的预算。"},
+      {"en": "His performance exceeded expectations.", "zh": "他的表现超出了预期。"}
+    ]
+  },
+  {
+    "word": "facilitate",
+    "phonetic": "/fəˈsɪlɪteɪt/",
+    "en_def": "to make an action or process easy or easier",
+    "zh_def": "促进；便利；使容易",
+    "sentences": [
+      {"en": "Technology can facilitate communication between people.", "zh": "技术可以促进人们之间的交流。"},
+      {"en": "The teacher's role is to facilitate learning.", "zh": "教师的角色是促进学习。"}
+    ]
+  },
+  {
+    "word": "facade",
+    "phonetic": "/fəˈsɑːd/",
+    "en_def": "an outward appearance that conceals a less pleasant reality",
+    "zh_def": "外表；表象；虚假外貌",
+    "sentences": [
+      {"en": "Behind his cheerful facade, he was deeply unhappy.", "zh": "在他快乐的外表背后，他内心深感痛苦。"},
+      {"en": "The company maintained a facade of stability.", "zh": "公司维持着一种稳定的表象。"}
+    ]
+  },
+  {
+    "word": "flexible",
+    "phonetic": "/ˈfleksəbl/",
+    "en_def": "capable of bending; ready and able to change so as to adapt",
+    "zh_def": "灵活的；有弹性的；可变通的",
+    "sentences": [
+      {"en": "A flexible work schedule allows better work-life balance.", "zh": "灵活的工作时间安排有助于更好地平衡工作与生活。"},
+      {"en": "You need to be flexible when plans change.", "zh": "当计划改变时，你需要灵活应变。"}
+    ]
+  },
+  {
+    "word": "fundamental",
+    "phonetic": "/ˌfʌndəˈmentl/",
+    "en_def": "forming a necessary base or core; of central importance",
+    "zh_def": "基本的；根本的；基础的",
+    "sentences": [
+      {"en": "Freedom of speech is a fundamental right.", "zh": "言论自由是一项基本权利。"},
+      {"en": "Hard work is fundamental to success.", "zh": "努力工作是成功的根本。"}
+    ]
+  },
+  {
+    "word": "generate",
+    "phonetic": "/ˈdʒenəreɪt/",
+    "en_def": "to produce or create something",
+    "zh_def": "产生；生成；发生",
+    "sentences": [
+      {"en": "Solar panels generate electricity from sunlight.", "zh": "太阳能电池板利用阳光发电。"},
+      {"en": "The event generated a lot of interest.", "zh": "这次活动引起了很大的兴趣。"}
+    ]
+  },
+  {
+    "word": "illustrate",
+    "phonetic": "/ˈɪləstreɪt/",
+    "en_def": "to make something clear by using examples, charts, or pictures",
+    "zh_def": "说明；阐明；给……配插图",
+    "sentences": [
+      {"en": "The graph illustrates the rise in temperature.", "zh": "该图表说明了温度的上升情况。"},
+      {"en": "Let me illustrate my point with an example.", "zh": "让我用一个例子来说明我的观点。"}
+    ]
+  },
+  {
+    "word": "imperative",
+    "phonetic": "/ɪmˈperətɪv/",
+    "en_def": "of vital importance; absolutely necessary",
+    "zh_def": "必要的；紧迫的；至关重要的",
+    "sentences": [
+      {"en": "It is imperative that we act now.", "zh": "我们必须立即行动。"},
+      {"en": "Meeting the deadline is imperative for the project.", "zh": "按时完成截止日期对项目来说至关重要。"}
+    ]
+  },
+  {
+    "word": "implement",
+    "phonetic": "/ˈɪmplɪment/",
+    "en_def": "to put a plan or decision into effect",
+    "zh_def": "实施；执行；落实",
+    "sentences": [
+      {"en": "The school implemented a new grading system.", "zh": "学校实施了新的评分制度。"},
+      {"en": "It is difficult to implement the policy effectively.", "zh": "有效执行这项政策是困难的。"}
+    ]
+  },
+  {
+    "word": "inevitable",
+    "phonetic": "/ɪnˈevɪtəbl/",
+    "en_def": "certain to happen; unable to be avoided or prevented",
+    "zh_def": "不可避免的；必然发生的",
+    "sentences": [
+      {"en": "Change is inevitable in a fast-moving industry.", "zh": "在快速发展的行业中，变革是不可避免的。"},
+      {"en": "It was inevitable that they would eventually disagree.", "zh": "他们最终产生分歧是不可避免的。"}
+    ]
+  },
+  {
+    "word": "initiative",
+    "phonetic": "/ɪˈnɪʃətɪv/",
+    "en_def": "the ability to assess and act independently; a new plan or action",
+    "zh_def": "主动性；倡议；主动权",
+    "sentences": [
+      {"en": "She showed great initiative by starting the project herself.", "zh": "她主动开始这个项目，表现出了很强的主动性。"},
+      {"en": "The government launched a new environmental initiative.", "zh": "政府推出了新的环保倡议。"}
+    ]
+  },
+  {
+    "word": "innovative",
+    "phonetic": "/ˈɪnəveɪtɪv/",
+    "en_def": "featuring new methods; advanced and original",
+    "zh_def": "创新的；革新的；新颖的",
+    "sentences": [
+      {"en": "The company is known for its innovative products.", "zh": "该公司以其创新产品而闻名。"},
+      {"en": "We need innovative solutions to tackle climate change.", "zh": "我们需要创新解决方案来应对气候变化。"}
+    ]
+  },
+  {
+    "word": "insufficient",
+    "phonetic": "/ˌɪnsəˈfɪʃnt/",
+    "en_def": "not enough; inadequate",
+    "zh_def": "不足的；不够的；不充分的",
+    "sentences": [
+      {"en": "The evidence was insufficient to prove his guilt.", "zh": "证据不足以证明他有罪。"},
+      {"en": "Insufficient sleep affects your concentration.", "zh": "睡眠不足会影响你的专注力。"}
+    ]
+  },
+  {
+    "word": "integrate",
+    "phonetic": "/ˈɪntɪɡreɪt/",
+    "en_def": "to combine or coordinate separate elements so as to provide a harmonious whole",
+    "zh_def": "整合；融合；使成一体",
+    "sentences": [
+      {"en": "The new software integrates all business functions.", "zh": "新软件整合了所有业务功能。"},
+      {"en": "It takes time to integrate into a new culture.", "zh": "融入新文化需要时间。"}
+    ]
+  },
+  {
+    "word": "interpret",
+    "phonetic": "/ɪnˈtɜːprɪt/",
+    "en_def": "to explain the meaning of; to understand something in a particular way",
+    "zh_def": "解释；诠释；口译",
+    "sentences": [
+      {"en": "How do you interpret this poem?", "zh": "你如何解读这首诗？"},
+      {"en": "He interpreted her silence as agreement.", "zh": "他把她的沉默解读为同意。"}
+    ]
+  },
+  {
+    "word": "maintain",
+    "phonetic": "/meɪnˈteɪn/",
+    "en_def": "to cause or enable a condition to continue; to keep in good condition",
+    "zh_def": "维持；保持；保养",
+    "sentences": [
+      {"en": "It is important to maintain a healthy lifestyle.", "zh": "保持健康的生活方式很重要。"},
+      {"en": "She maintained her composure during the interview.", "zh": "她在面试中保持了镇定。"}
+    ]
+  },
+  {
+    "word": "meticulous",
+    "phonetic": "/məˈtɪkjʊləs/",
+    "en_def": "showing great attention to detail; very careful and precise",
+    "zh_def": "一丝不苟的；极为细心的",
+    "sentences": [
+      {"en": "She was meticulous in her preparation for the exam.", "zh": "她对考试的准备工作一丝不苟。"},
+      {"en": "The surgeon performed the operation with meticulous precision.", "zh": "外科医生以一丝不苟的精准度完成了手术。"}
+    ]
+  },
+  {
+    "word": "motivate",
+    "phonetic": "/ˈməʊtɪveɪt/",
+    "en_def": "to provide with a reason to do something; to stimulate interest",
+    "zh_def": "激励；激发；促使",
+    "sentences": [
+      {"en": "A good teacher motivates students to learn.", "zh": "好老师能激励学生学习。"},
+      {"en": "What motivates you to work hard every day?", "zh": "是什么激励你每天努力工作？"}
+    ]
+  },
+  {
+    "word": "nuance",
+    "phonetic": "/ˈnjuːɑːns/",
+    "en_def": "a subtle difference in meaning, expression, or sound",
+    "zh_def": "细微差别；微妙之处",
+    "sentences": [
+      {"en": "He appreciated the nuance in her argument.", "zh": "他欣赏她论点中的细微差别。"},
+      {"en": "Understanding cultural nuances is important when traveling.", "zh": "旅行时了解文化上的细微差异很重要。"}
+    ]
+  },
+  {
+    "word": "obtain",
+    "phonetic": "/əbˈteɪn/",
+    "en_def": "to get, acquire, or secure something",
+    "zh_def": "获得；得到；取得",
+    "sentences": [
+      {"en": "She obtained a scholarship to study abroad.", "zh": "她获得了出国留学的奖学金。"},
+      {"en": "It is difficult to obtain accurate information.", "zh": "获取准确信息很困难。"}
+    ]
+  },
+  {
+    "word": "obvious",
+    "phonetic": "/ˈɒbviəs/",
+    "en_def": "easily perceived or understood; clear, self-evident",
+    "zh_def": "明显的；显然的；浅显的",
+    "sentences": [
+      {"en": "It is obvious that he is not happy.", "zh": "很明显他不高兴。"},
+      {"en": "The solution to the problem was obvious.", "zh": "这个问题的解决方案是显而易见的。"}
+    ]
+  },
+  {
+    "word": "overcome",
+    "phonetic": "/ˌəʊvəˈkʌm/",
+    "en_def": "to succeed in dealing with a problem or difficulty",
+    "zh_def": "克服；战胜；压倒",
+    "sentences": [
+      {"en": "She overcame many obstacles to achieve success.", "zh": "她克服了许多障碍，取得了成功。"},
+      {"en": "With determination, you can overcome any challenge.", "zh": "有决心，你可以克服任何挑战。"}
+    ]
+  },
+  {
+    "word": "perceive",
+    "phonetic": "/pəˈsiːv/",
+    "en_def": "to become aware of or understand something; to interpret",
+    "zh_def": "感知；察觉；认为",
+    "sentences": [
+      {"en": "How do you perceive the situation?", "zh": "你如何看待这种情况？"},
+      {"en": "He perceived a change in her attitude.", "zh": "他察觉到她态度的变化。"}
+    ]
+  },
+  {
+    "word": "perseverance",
+    "phonetic": "/ˌpɜːsɪˈvɪərəns/",
+    "en_def": "continued effort and determination despite difficulty or delay",
+    "zh_def": "坚持不懈；毅力；锲而不舍",
+    "sentences": [
+      {"en": "Success requires perseverance and hard work.", "zh": "成功需要坚持不懈和努力工作。"},
+      {"en": "Her perseverance finally paid off when she got the job.", "zh": "她的坚持不懈终于在她得到这份工作时得到了回报。"}
+    ]
+  },
+  {
+    "word": "perspective",
+    "phonetic": "/pəˈspektɪv/",
+    "en_def": "a particular attitude toward or way of regarding something; a point of view",
+    "zh_def": "观点；视角；看法",
+    "sentences": [
+      {"en": "Try to see things from a different perspective.", "zh": "试着从不同角度看问题。"},
+      {"en": "Traveling broadens your perspective on life.", "zh": "旅行开阔了你对生活的视野。"}
+    ]
+  },
+  {
+    "word": "pragmatic",
+    "phonetic": "/præɡˈmætɪk/",
+    "en_def": "dealing with things sensibly and realistically in a practical way",
+    "zh_def": "务实的；实用的；注重实效的",
+    "sentences": [
+      {"en": "We need a pragmatic approach to solve this problem.", "zh": "我们需要务实的方法来解决这个问题。"},
+      {"en": "She is a pragmatic leader who focuses on results.", "zh": "她是一位注重结果的务实领导者。"}
+    ]
+  },
+  {
+    "word": "proficient",
+    "phonetic": "/prəˈfɪʃnt/",
+    "en_def": "competent or skilled in doing or using something",
+    "zh_def": "熟练的；精通的；擅长的",
+    "sentences": [
+      {"en": "She became proficient in Spanish after two years of study.", "zh": "经过两年的学习，她的西班牙语变得很熟练。"},
+      {"en": "He is proficient in multiple programming languages.", "zh": "他精通多种编程语言。"}
+    ]
+  },
+  {
+    "word": "promote",
+    "phonetic": "/prəˈməʊt/",
+    "en_def": "to further the progress of something; to raise to a higher position",
+    "zh_def": "促进；推广；晋升",
+    "sentences": [
+      {"en": "The campaign promotes healthy eating habits.", "zh": "该活动旨在推广健康饮食习惯。"},
+      {"en": "She was promoted to senior manager last year.", "zh": "她去年晋升为高级经理。"}
+    ]
+  },
+  {
+    "word": "proportion",
+    "phonetic": "/prəˈpɔːʃn/",
+    "en_def": "a part, share, or number considered in relation to a whole",
+    "zh_def": "比例；部分；均衡",
+    "sentences": [
+      {"en": "A large proportion of students passed the exam.", "zh": "很大比例的学生通过了考试。"},
+      {"en": "The problem is out of proportion.", "zh": "这个问题被过分夸大了。"}
+    ]
+  },
+  {
+    "word": "pursue",
+    "phonetic": "/pəˈsjuː/",
+    "en_def": "to follow or chase; to continue or proceed with a goal",
+    "zh_def": "追求；追赶；从事",
+    "sentences": [
+      {"en": "She decided to pursue a career in medicine.", "zh": "她决定从事医学职业。"},
+      {"en": "You should pursue your dreams with passion.", "zh": "你应该热情地追求自己的梦想。"}
+    ]
+  },
+  {
+    "word": "reflect",
+    "phonetic": "/rɪˈflekt/",
+    "en_def": "to think carefully about; to show an image of; to express",
+    "zh_def": "反映；反思；倒映",
+    "sentences": [
+      {"en": "His work reflects his dedication.", "zh": "他的工作反映了他的敬业精神。"},
+      {"en": "Take time to reflect on your mistakes.", "zh": "花时间反思你的错误。"}
+    ]
+  },
+  {
+    "word": "relevant",
+    "phonetic": "/ˈreləvənt/",
+    "en_def": "closely connected or appropriate to what is being done or considered",
+    "zh_def": "相关的；切题的；有意义的",
+    "sentences": [
+      {"en": "Please keep your comments relevant to the topic.", "zh": "请保持你的评论与主题相关。"},
+      {"en": "Is this information relevant to our discussion?", "zh": "这个信息与我们的讨论相关吗？"}
+    ]
+  },
+  {
+    "word": "resilience",
+    "phonetic": "/rɪˈzɪliəns/",
+    "en_def": "the capacity to recover quickly from difficulties; toughness",
+    "zh_def": "韧性；恢复力；适应力",
+    "sentences": [
+      {"en": "The community showed remarkable resilience after the disaster.", "zh": "这个社区在灾难后表现出了非凡的韧性。"},
+      {"en": "Resilience is one of the most important qualities for success.", "zh": "韧性是成功最重要的品质之一。"}
+    ]
+  },
+  {
+    "word": "significant",
+    "phonetic": "/sɪɡˈnɪfɪkənt/",
+    "en_def": "sufficiently great or important to be worthy of attention",
+    "zh_def": "重要的；显著的；有意义的",
+    "sentences": [
+      {"en": "There has been a significant improvement in air quality.", "zh": "空气质量有了显著改善。"},
+      {"en": "This discovery is significant for medical research.", "zh": "这一发现对医学研究具有重要意义。"}
     ]
   },
   {
@@ -160,6 +740,46 @@
     ]
   },
   {
+    "word": "spontaneous",
+    "phonetic": "/spɒnˈteɪniəs/",
+    "en_def": "performed or occurring as a result of a sudden impulse, without planning",
+    "zh_def": "自发的；即兴的；不由自主的",
+    "sentences": [
+      {"en": "The audience broke into spontaneous applause.", "zh": "观众自发地鼓起了掌声。"},
+      {"en": "Their relationship felt natural and spontaneous.", "zh": "他们的关系感觉自然而不做作。"}
+    ]
+  },
+  {
+    "word": "substantial",
+    "phonetic": "/səbˈstænʃl/",
+    "en_def": "of considerable importance, size, or worth",
+    "zh_def": "大量的；实质性的；坚实的",
+    "sentences": [
+      {"en": "There was a substantial increase in profits.", "zh": "利润大幅增加。"},
+      {"en": "She made a substantial contribution to the project.", "zh": "她对该项目做出了重大贡献。"}
+    ]
+  },
+  {
+    "word": "sufficient",
+    "phonetic": "/səˈfɪʃnt/",
+    "en_def": "enough; adequate for the purpose",
+    "zh_def": "足够的；充分的",
+    "sentences": [
+      {"en": "Is there sufficient evidence to support the claim?", "zh": "是否有足够的证据支持这一说法？"},
+      {"en": "Make sure you have sufficient time to complete the task.", "zh": "确保你有足够的时间完成任务。"}
+    ]
+  },
+  {
+    "word": "sustain",
+    "phonetic": "/səˈsteɪn/",
+    "en_def": "to strengthen or support; to keep going over time",
+    "zh_def": "维持；支撑；承受",
+    "sentences": [
+      {"en": "It is hard to sustain motivation over a long period.", "zh": "长期保持积极性是很困难的。"},
+      {"en": "The economy cannot sustain such rapid growth.", "zh": "经济无法承受如此快速的增长。"}
+    ]
+  },
+  {
     "word": "tenacious",
     "phonetic": "/tɪˈneɪʃəs/",
     "en_def": "tending to keep a firm hold; not readily giving up",
@@ -170,43 +790,103 @@
     ]
   },
   {
-    "word": "eloquent",
-    "phonetic": "/ˈeləkwənt/",
-    "en_def": "fluent or persuasive in speaking or writing",
-    "zh_def": "雄辩的；有口才的",
+    "word": "tendency",
+    "phonetic": "/ˈtendənsi/",
+    "en_def": "an inclination toward a particular characteristic or type of behavior",
+    "zh_def": "倾向；趋势；癖好",
     "sentences": [
-      {"en": "The politician delivered an eloquent speech.", "zh": "这位政治家发表了一篇雄辩的演讲。"},
-      {"en": "Her eloquent writing style impressed the judges.", "zh": "她雄辩的写作风格给评委留下了深刻印象。"}
+      {"en": "He has a tendency to overthink everything.", "zh": "他有过度思考一切的倾向。"},
+      {"en": "There is a tendency for prices to rise in winter.", "zh": "冬季价格有上涨的趋势。"}
     ]
   },
   {
-    "word": "alleviate",
-    "phonetic": "/əˈliːvieɪt/",
-    "en_def": "to make (suffering, deficiency, or a problem) less severe",
-    "zh_def": "减轻；缓解；缓和",
+    "word": "tolerate",
+    "phonetic": "/ˈtɒləreɪt/",
+    "en_def": "to allow something to happen without interference; to endure",
+    "zh_def": "容忍；忍受；宽容",
     "sentences": [
-      {"en": "The medicine helped alleviate his pain.", "zh": "这种药帮助减轻了他的疼痛。"},
-      {"en": "Exercise can alleviate symptoms of depression.", "zh": "锻炼可以缓解抑郁症状。"}
+      {"en": "We should not tolerate discrimination of any kind.", "zh": "我们不应该容忍任何形式的歧视。"},
+      {"en": "She could not tolerate the noise.", "zh": "她无法忍受噪音。"}
     ]
   },
   {
-    "word": "imperative",
-    "phonetic": "/ɪmˈperətɪv/",
-    "en_def": "of vital importance; crucial; giving an authoritative command",
-    "zh_def": "必要的；紧迫的；命令式的",
+    "word": "transform",
+    "phonetic": "/trænsˈfɔːm/",
+    "en_def": "to make a thorough or dramatic change in form, appearance, or character",
+    "zh_def": "转变；改造；变换",
     "sentences": [
-      {"en": "It is imperative that we act now.", "zh": "我们必须立即行动。"},
-      {"en": "Meeting the deadline is imperative for the project.", "zh": "按时完成截止日期对项目来说至关重要。"}
+      {"en": "Education can transform lives.", "zh": "教育可以改变人生。"},
+      {"en": "The city has been transformed in recent years.", "zh": "这座城市近年来发生了翻天覆地的变化。"}
     ]
   },
   {
-    "word": "nuance",
-    "phonetic": "/ˈnjuːɑːns/",
-    "en_def": "a subtle difference in meaning, expression, or sound",
-    "zh_def": "细微差别；细微之处；微妙之处",
+    "word": "transparent",
+    "phonetic": "/trænsˈpærənt/",
+    "en_def": "allowing light through; easy to perceive or detect; open and honest",
+    "zh_def": "透明的；清晰的；坦诚的",
     "sentences": [
-      {"en": "He appreciated the nuance in her argument.", "zh": "他欣赏她论点中的细微差别。"},
-      {"en": "Understanding cultural nuances is important when traveling.", "zh": "旅行时了解文化上的细微差异很重要。"}
+      {"en": "The government should be transparent about its decisions.", "zh": "政府对其决策应该保持透明。"},
+      {"en": "The glass is completely transparent.", "zh": "这块玻璃是完全透明的。"}
+    ]
+  },
+  {
+    "word": "ultimately",
+    "phonetic": "/ˈʌltɪmətli/",
+    "en_def": "finally; in the end; at the most basic level",
+    "zh_def": "最终；根本上；最后",
+    "sentences": [
+      {"en": "Ultimately, the decision is yours.", "zh": "最终，决定权在你。"},
+      {"en": "Hard work ultimately leads to success.", "zh": "努力工作最终会带来成功。"}
+    ]
+  },
+  {
+    "word": "undermine",
+    "phonetic": "/ˌʌndəˈmaɪn/",
+    "en_def": "to damage or weaken someone or something, especially gradually",
+    "zh_def": "削弱；破坏；逐渐损害",
+    "sentences": [
+      {"en": "Constant criticism can undermine a person's confidence.", "zh": "不断的批评会削弱一个人的信心。"},
+      {"en": "His actions undermined the trust of his colleagues.", "zh": "他的行为破坏了同事对他的信任。"}
+    ]
+  },
+  {
+    "word": "virtually",
+    "phonetic": "/ˈvɜːtʃuəli/",
+    "en_def": "nearly; almost; in effect, though not in fact",
+    "zh_def": "几乎；实际上；事实上",
+    "sentences": [
+      {"en": "The project is virtually complete.", "zh": "这个项目几乎完成了。"},
+      {"en": "Virtually everyone agreed with the proposal.", "zh": "几乎所有人都同意这个提案。"}
+    ]
+  },
+  {
+    "word": "vulnerable",
+    "phonetic": "/ˈvʌlnərəbl/",
+    "en_def": "susceptible to physical or emotional attack or harm",
+    "zh_def": "脆弱的；易受伤的；易受攻击的",
+    "sentences": [
+      {"en": "Children are particularly vulnerable to disease.", "zh": "儿童特别容易患病。"},
+      {"en": "The elderly are vulnerable during extreme weather.", "zh": "极端天气下老年人尤为脆弱。"}
+    ]
+  },
+  {
+    "word": "whereas",
+    "phonetic": "/ˌweərˈæz/",
+    "en_def": "in contrast or comparison with the fact that",
+    "zh_def": "然而；但是；鉴于",
+    "sentences": [
+      {"en": "He is very outgoing, whereas his brother is shy.", "zh": "他非常外向，而他的兄弟很内向。"},
+      {"en": "Some people like cold weather, whereas others prefer warmth.", "zh": "有些人喜欢寒冷的天气，而另一些人则更喜欢温暖。"}
+    ]
+  },
+  {
+    "word": "widespread",
+    "phonetic": "/ˈwaɪdspred/",
+    "en_def": "found or distributed over a large area or number of people",
+    "zh_def": "普遍的；广泛的；遍布的",
+    "sentences": [
+      {"en": "There is widespread concern about climate change.", "zh": "人们对气候变化普遍感到担忧。"},
+      {"en": "The disease has become widespread across the country.", "zh": "这种疾病已在全国范围内广泛传播。"}
     ]
   }
 ]

@@ -13,6 +13,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import Qt, pyqtSignal, QMimeData, QPoint, QDate, QTime
 from PyQt6.QtGui import QDrag, QPixmap, QPainter, QColor, QFont, QAction
+from datetime import datetime as _dt
 
 
 def _lighten_hex(hex_color: str, factor: float = 0.45) -> str:
@@ -111,6 +112,24 @@ class TaskCard(QFrame):
             note.setStyleSheet(f"color:{PALETTE['text_sub']};font-size:11px;")
             note.setWordWrap(True)
             lay.addWidget(note)
+
+        # creation time — short form "M.D", full form in tooltip
+        if self.task.created_at:
+            try:
+                dt = _dt.fromisoformat(self.task.created_at)
+                short = f"{dt.month}.{dt.day}"
+                full  = dt.strftime("%Y年%m月%d日 %H:%M 创建")
+            except Exception:
+                short = ""
+                full  = ""
+            if short:
+                time_lbl = QLabel(short)
+                time_lbl.setStyleSheet(
+                    f"color:{PALETTE['text_sub']};font-size:10px;"
+                )
+                time_lbl.setAlignment(Qt.AlignmentFlag.AlignRight)
+                time_lbl.setToolTip(full)
+                lay.addWidget(time_lbl)
 
     # --- Drag support ---
 
@@ -229,14 +248,17 @@ class QuadrantPanel(QFrame):
         self._scroll.setStyleSheet(f"background:{bg};")
         self._container.setStyleSheet(f"background:{bg};")
 
-    def add_card(self, task: MemoTask):
+    def add_card(self, task: MemoTask, prepend: bool = False):
         card = TaskCard(task)
         card.delete_requested.connect(self._on_delete)
         card.toggle_done.connect(self._on_toggle_done)
         card.edit_requested.connect(self._on_edit)
         card.schedule_requested.connect(self._on_schedule)
-        # insert before the stretch
-        self._card_layout.insertWidget(self._card_layout.count() - 1, card)
+        if prepend:
+            self._card_layout.insertWidget(0, card)
+        else:
+            # insert before the trailing stretch
+            self._card_layout.insertWidget(self._card_layout.count() - 1, card)
 
     def clear_cards(self):
         while self._card_layout.count() > 1:
@@ -253,7 +275,7 @@ class QuadrantPanel(QFrame):
                 quadrant=self.quadrant,
             )
             self._store.add_memo(task)
-            self.add_card(task)
+            self._refresh()
 
     def _on_edit(self, task_id: str):
         if not self._store:
@@ -320,7 +342,8 @@ class QuadrantPanel(QFrame):
             return
         self.clear_cards()
         tasks = [t for t in self._store.memo_tasks if t.quadrant == self.quadrant]
-        # undone tasks first, done tasks at the bottom
+        # sort by created_at descending (newest first within each group)
+        tasks.sort(key=lambda t: t.created_at or "", reverse=True)
         for t in tasks:
             if not t.done:
                 self.add_card(t)
@@ -488,6 +511,7 @@ class MemoWidget(QWidget):
         for q, panel in self._panels.items():
             panel.clear_cards()
             tasks = [t for t in self._store.memo_tasks if t.quadrant == q]
+            tasks.sort(key=lambda t: t.created_at or "", reverse=True)
             for t in tasks:
                 if not t.done:
                     panel.add_card(t)

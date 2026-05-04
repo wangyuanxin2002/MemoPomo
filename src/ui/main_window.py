@@ -135,9 +135,6 @@ class MainWindow(QMainWindow):
         self._store = store
         self.setWindowTitle("MemoPomo | 备忘番茄")
         self.resize(1200, 750)
-        self.setWindowFlags(
-            self.windowFlags() | Qt.WindowType.WindowStaysOnTopHint
-        )
         # track which block_ids have already been alerted this session
         self._alerted_blocks: set[str] = set()
         # track snoozed blocks: block_id → datetime when to re-alert
