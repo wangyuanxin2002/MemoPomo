@@ -20,6 +20,7 @@ Order toggle (top-right):  随机 ⚄  ↔  顺序 ↕
 
 import json
 import random
+import sys
 from pathlib import Path
 
 from PyQt6.QtWidgets import (
@@ -32,7 +33,8 @@ from PyQt6.QtGui import QFont, QColor
 
 from src.ui.theme import PALETTE
 
-WORDS_FILE    = Path(__file__).parent.parent.parent / "data" / "words.json"
+_BASE = Path(sys.executable).parent if getattr(sys, 'frozen', False) else Path(__file__).parent.parent.parent
+WORDS_FILE    = _BASE / "data" / "words.json"
 FORCE_HOLD_MS = 1500
 
 

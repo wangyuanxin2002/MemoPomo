@@ -5,6 +5,7 @@ Thread-safe for reads; writes always go through save().
 
 import json
 import os
+import sys
 from datetime import date, timedelta
 from pathlib import Path
 from typing import List, Optional
@@ -14,7 +15,14 @@ from src.core.models import (
     PomodoroTemplate, PomodoroSession,
 )
 
-DATA_DIR = Path(__file__).parent.parent.parent / "data"
+# When frozen by PyInstaller, store data next to the .exe.
+# When running from source, store data in the repo root.
+if getattr(sys, 'frozen', False):
+    _BASE = Path(sys.executable).parent
+else:
+    _BASE = Path(__file__).parent.parent.parent
+
+DATA_DIR = _BASE / "data"
 SETTINGS_FILE      = DATA_DIR / "settings.json"
 MEMO_FILE          = DATA_DIR / "memo.json"
 CALENDAR_FILE      = DATA_DIR / "calendar.json"
