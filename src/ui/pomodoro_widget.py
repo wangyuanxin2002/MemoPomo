@@ -273,6 +273,8 @@ class PomodoroWidget(QWidget):
     """
 
     session_completed = pyqtSignal(object)   # TimeBlock
+    # emitted during custom countdown so FloatyWindow can update
+    countdown_tick = pyqtSignal(str, str, bool)  # time_str, label, running
 
     def __init__(self, store: Store, parent=None):
         super().__init__(parent)
@@ -447,6 +449,10 @@ class PomodoroWidget(QWidget):
     def _save_session_now(self):
         """Persist the current session and emit a calendar block."""
         end = datetime.now()
+        elapsed_min = (end - self._session_start).total_seconds() / 60
+        if elapsed_min < 1:
+            return  # too short to record
+
         self._session.actual_start = self._session_start.strftime("%H:%M")
         self._session.actual_end   = end.strftime("%H:%M")
         self._session.completed    = True
@@ -518,6 +524,11 @@ class PomodoroWidget(QWidget):
     # ------------------------------------------------------------------
 
     def _on_start_countdown(self):
+        # If pomodoro engine is running, refuse to start a countdown
+        if self._engine and self._engine.is_running:
+            from PyQt6.QtWidgets import QMessageBox
+            QMessageBox.information(self, "提示", "番茄钟正在计时，请先重置后再启动自定义倒计时。")
+            return
         if self._cd_timer and self._cd_timer.isActive():
             return  # already running
         dlg = CountdownDialog(self._store.memo_tasks, parent=self)
@@ -526,6 +537,11 @@ class PomodoroWidget(QWidget):
         total_sec = dlg.total_seconds()
         if total_sec <= 0:
             return
+
+        # stop any lingering engine
+        if self._engine:
+            self._engine.reset()
+            self._engine = None
 
         self._cd_remaining = total_sec
         self._cd_start     = datetime.now()
@@ -551,10 +567,13 @@ class PomodoroWidget(QWidget):
             f"倒计时：{self._cd_label or '自由计时'}"
         )
         self._update_cd_display()
+        # push initial state to floaty window
+        self._cd_notify_floaty()
 
     def _cd_tick(self):
         self._cd_remaining -= 1
         self._update_cd_display()
+        self._cd_notify_floaty()
         if self._cd_remaining <= 0:
             self._cd_timer.stop()
             self._status_lbl.setText("倒计时结束！")
@@ -578,6 +597,16 @@ class PomodoroWidget(QWidget):
         else:
             self._cd_timer.start()
             self._pause_btn.setText("暂停")
+        self._cd_notify_floaty()
+
+    def _cd_notify_floaty(self):
+        """Push current countdown state to the floaty window (if wired)."""
+        h = self._cd_remaining // 3600
+        m = (self._cd_remaining % 3600) // 60
+        s = self._cd_remaining % 60
+        time_str = f"{h:02d}:{m:02d}:{s:02d}" if h > 0 else f"{m:02d}:{s:02d}"
+        running = bool(self._cd_timer and self._cd_timer.isActive())
+        self.countdown_tick.emit(time_str, self._cd_label or "倒计时", running)
 
     def _cd_stop(self):
         """User pressed stop/reset — save elapsed time to calendar."""
@@ -590,21 +619,23 @@ class PomodoroWidget(QWidget):
         """Save countdown to calendar and restore UI."""
         if self._cd_start:
             end = datetime.now()
-            task = next(
-                (t for t in self._store.memo_tasks
-                 if t.id == self._cd_task_id), None
-            )
-            block = TimeBlock(
-                title=self._cd_label or (task.title if task else "倒计时"),
-                date=self._cd_start.strftime("%Y-%m-%d"),
-                start_time=self._cd_start.strftime("%H:%M"),
-                end_time=end.strftime("%H:%M"),
-                memo_task_id=self._cd_task_id,
-                is_planned=False,
-                color=PALETTE["work_block"],
-            )
-            self._store.add_block(block)
-            self.session_completed.emit(block)
+            elapsed_min = (end - self._cd_start).total_seconds() / 60
+            if elapsed_min >= 1:
+                task = next(
+                    (t for t in self._store.memo_tasks
+                     if t.id == self._cd_task_id), None
+                )
+                block = TimeBlock(
+                    title=self._cd_label or (task.title if task else "倒计时"),
+                    date=self._cd_start.strftime("%Y-%m-%d"),
+                    start_time=self._cd_start.strftime("%H:%M"),
+                    end_time=end.strftime("%H:%M"),
+                    memo_task_id=self._cd_task_id,
+                    is_planned=False,
+                    color=PALETTE["work_block"],
+                )
+                self._store.add_block(block)
+                self.session_completed.emit(block)
 
         self._cd_start   = None
         self._cd_label   = ""

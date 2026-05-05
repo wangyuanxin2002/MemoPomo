@@ -263,14 +263,24 @@ class MainWindow(QMainWindow):
             self._pomo.start_for_block(block)
             self._start_floaty_updates()
         else:
-            # Snoozed: re-alert after chosen minutes
+            # Snoozed: shift the block's start_time forward by snooze_min
             snooze_min = dlg.snooze_minutes()
             self._store.settings.snooze_minutes = snooze_min
             self._store.save_settings()
             from datetime import timedelta
-            self._snoozed[block.id] = datetime.now() + timedelta(minutes=snooze_min)
-            # allow re-alert after snooze
-            self._alerted_blocks.discard(block.id)
+            try:
+                sh, sm = map(int, block.start_time.split(":"))
+                eh, em = map(int, block.end_time.split(":"))
+                dur_min = (eh * 60 + em) - (sh * 60 + sm)
+                new_start = datetime.now() + timedelta(minutes=snooze_min)
+                new_end   = new_start + timedelta(minutes=max(dur_min, 1))
+                block.start_time = new_start.strftime("%H:%M")
+                block.end_time   = new_end.strftime("%H:%M")
+                block.date       = new_start.strftime("%Y-%m-%d")
+                self._store.update_block(block)
+                self._cal.refresh()
+            except Exception:
+                pass  # if parsing fails, fall back to silent snooze
 
     # ------------------------------------------------------------------
     # Floaty window
@@ -288,6 +298,7 @@ class MainWindow(QMainWindow):
         self._floaty.quit_app.connect(self._quit)
 
         self._pomo._start_btn.clicked.connect(self._start_floaty_updates)
+        self._pomo.countdown_tick.connect(self._on_countdown_tick)
 
     def _start_floaty_updates(self):
         engine = self._pomo.engine()
@@ -302,6 +313,10 @@ class MainWindow(QMainWindow):
             state.remaining_str, kind, running,
             task_name=self._pomo.current_task_name,
         )
+
+    def _on_countdown_tick(self, time_str: str, label: str, running: bool):
+        self._floaty.update_state(time_str, label, running,
+                                  task_name=self._pomo.current_task_name)
 
     def _minimize_to_floaty(self):
         self.hide()
