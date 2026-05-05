@@ -432,6 +432,7 @@ class PomodoroWidget(QWidget):
             self._save_session_now()
         if self._engine:
             self._engine.reset()
+            self._engine = None
         self._time_lbl.setText("25:00")
         self._status_lbl.setText('已重置，点击"开始"重新启动')
         self._start_btn.setEnabled(True)
@@ -657,7 +658,7 @@ class PomodoroWidget(QWidget):
         linked to the TimeBlock's memo task (if any), without showing the
         TaskSelectDialog.
         """
-        if self._engine:
+        if self._engine and self._engine.is_running:
             return  # already running
 
         tpl = self._store.default_template()

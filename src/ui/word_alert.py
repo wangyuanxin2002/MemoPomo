@@ -30,6 +30,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import Qt, QTimer, pyqtSignal, QSize
 from PyQt6.QtGui import QFont, QColor
+from PyQt6.QtWidgets import QGraphicsBlurEffect, QGraphicsOpacityEffect
 
 from src.ui.theme import PALETTE
 
@@ -385,6 +386,7 @@ class WordAlert(QWidget):
 
     def _reset_nav(self):
         self._stack.setCurrentIndex(0)
+        self._update_list_blur(0)
         self._prev_btn.setEnabled(False)
         self._next_btn.setText("下一页 →")
         self._next_btn.setEnabled(True)
@@ -394,6 +396,17 @@ class WordAlert(QWidget):
         except RuntimeError:
             pass
         self._next_btn.clicked.connect(self._go_next)
+
+    def _update_list_blur(self, page_index: int):
+        """Blur the word list on the spelling page so users can't cheat."""
+        if page_index == 2:
+            blur = QGraphicsBlurEffect()
+            blur.setBlurRadius(12)
+            self._word_list.setGraphicsEffect(blur)
+            self._word_list.setToolTip("拼写时单词列表已隐藏")
+        else:
+            self._word_list.setGraphicsEffect(None)
+            self._word_list.setToolTip("")
 
     def _go_next(self):
         cur   = self._stack.currentIndex()
@@ -419,6 +432,7 @@ class WordAlert(QWidget):
             self._finish_word()
         else:
             self._stack.setCurrentIndex(cur + 1)
+            self._update_list_blur(cur + 1)
             self._prev_btn.setEnabled(True)
             if cur + 1 == total - 1:
                 self._next_btn.setText("完成 ✓")
@@ -427,6 +441,7 @@ class WordAlert(QWidget):
         cur = self._stack.currentIndex()
         if cur > 0:
             self._stack.setCurrentIndex(cur - 1)
+            self._update_list_blur(cur - 1)
             self._next_btn.setText("下一页 →")
             # reconnect next in case it was rewired to _finish_word
             try:

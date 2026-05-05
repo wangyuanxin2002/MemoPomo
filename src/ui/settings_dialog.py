@@ -14,7 +14,7 @@ from PyQt6.QtWidgets import (
     QHBoxLayout, QCheckBox, QLineEdit, QPushButton,
     QSpinBox, QLabel, QDialogButtonBox, QFileDialog,
     QListWidget, QListWidgetItem, QInputDialog, QMessageBox,
-    QColorDialog,
+    QColorDialog, QScrollArea, QFrame,
 )
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor
@@ -139,6 +139,36 @@ class SettingsDialog(QDialog):
         qc_lay.addStretch()
         tabs.addTab(qc_tab, "象限颜色")
 
+        # ---------- Tab: Calendar Layout ----------
+        cal_tab = QWidget()
+        cal_lay = QFormLayout(cal_tab)
+
+        self._cal_hour_h = QSpinBox()
+        self._cal_hour_h.setRange(30, 200)
+        self._cal_hour_h.setValue(getattr(s, "cal_hour_h", 64))
+        self._cal_hour_h.setSuffix(" px / 小时")
+        cal_lay.addRow("时间格高度（密度）", self._cal_hour_h)
+
+        self._cal_start_h = QSpinBox()
+        self._cal_start_h.setRange(0, 23)
+        self._cal_start_h.setValue(getattr(s, "cal_start_h", 0))
+        self._cal_start_h.setSuffix(" 时")
+        cal_lay.addRow("显示起始时间", self._cal_start_h)
+
+        self._cal_end_h = QSpinBox()
+        self._cal_end_h.setRange(1, 24)
+        self._cal_end_h.setValue(getattr(s, "cal_end_h", 24))
+        self._cal_end_h.setSuffix(" 时")
+        cal_lay.addRow("显示终止时间", self._cal_end_h)
+
+        self._cal_day_w = QSpinBox()
+        self._cal_day_w.setRange(60, 400)
+        self._cal_day_w.setValue(getattr(s, "cal_day_w", 120))
+        self._cal_day_w.setSuffix(" px / 天")
+        cal_lay.addRow("周视图列宽", self._cal_day_w)
+
+        tabs.addTab(cal_tab, "日历布局")
+
         # ---------- Tab: Data ----------
         data_tab = QWidget()
         data_lay = QVBoxLayout(data_tab)
@@ -154,6 +184,33 @@ class SettingsDialog(QDialog):
         data_lay.addWidget(import_btn)
         data_lay.addStretch()
         tabs.addTab(data_tab, "数据")
+
+        # ---------- Tab: Deleted Tasks ----------
+        trash_tab = QWidget()
+        trash_lay = QVBoxLayout(trash_tab)
+        trash_lay.setSpacing(8)
+
+        trash_header = QHBoxLayout()
+        trash_header.addWidget(QLabel("已删除的备忘录任务（可恢复或彻底删除）"), 1)
+        clear_all_btn = QPushButton("清空回收站")
+        clear_all_btn.clicked.connect(self._clear_all_deleted)
+        trash_header.addWidget(clear_all_btn)
+        trash_lay.addLayout(trash_header)
+
+        self._trash_scroll_area = QScrollArea()
+        self._trash_scroll_area.setWidgetResizable(True)
+        self._trash_scroll_area.setFrameShape(QFrame.Shape.NoFrame)
+        self._trash_container = QWidget()
+        self._trash_list_lay = QVBoxLayout(self._trash_container)
+        self._trash_list_lay.setSpacing(4)
+        self._trash_list_lay.setContentsMargins(0, 0, 0, 0)
+        self._trash_list_lay.addStretch()
+        self._trash_scroll_area.setWidget(self._trash_container)
+        trash_lay.addWidget(self._trash_scroll_area, 1)
+
+        tabs.addTab(trash_tab, "回收站")
+        tabs.currentChanged.connect(self._on_tab_changed)
+        self._trash_tab_index = tabs.count() - 1
 
         # ---------- OK / Cancel ----------
         btns = QDialogButtonBox(
@@ -189,7 +246,7 @@ class SettingsDialog(QDialog):
         files = [
             "settings.json", "memo.json", "calendar.json",
             "pomodoro.json", "templates.json",
-            "word_progress.json", "words.json",
+            "word_progress.json", "words.json", "sticky.json",
         ]
         try:
             with zipfile.ZipFile(dst, "w", zipfile.ZIP_DEFLATED) as zf:
@@ -223,6 +280,90 @@ class SettingsDialog(QDialog):
         except Exception as e:
             QMessageBox.critical(self, "导入失败", str(e))
 
+    def _on_tab_changed(self, index: int):
+        if index == self._trash_tab_index:
+            self._refresh_trash()
+
+    def _refresh_trash(self):
+        # remove all rows except the trailing stretch
+        while self._trash_list_lay.count() > 1:
+            item = self._trash_list_lay.takeAt(0)
+            if item.widget():
+                item.widget().deleteLater()
+
+        deleted = [t for t in self._store.memo_tasks if t.deleted]
+        if not deleted:
+            lbl = QLabel("暂无已删除的任务")
+            lbl.setStyleSheet("color:#aaa; padding:12px;")
+            lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            self._trash_list_lay.insertWidget(0, lbl)
+            return
+
+        from src.core.models import QUADRANTS
+        for task in deleted:
+            row = QFrame()
+            row.setFrameShape(QFrame.Shape.StyledPanel)
+            row.setStyleSheet("QFrame{background:#f8f8f8; border:1px solid #e0e0e0; border-radius:6px;}")
+            row_lay = QHBoxLayout(row)
+            row_lay.setContentsMargins(8, 6, 8, 6)
+            row_lay.setSpacing(8)
+
+            q_label = QUADRANTS.get(task.quadrant, f"Q{task.quadrant}")
+            date_str = ""
+            if task.created_at:
+                try:
+                    from datetime import datetime
+                    dt = datetime.fromisoformat(task.created_at)
+                    date_str = f"  {dt.month}.{dt.day}"
+                except Exception:
+                    pass
+
+            info = QLabel(f"[{q_label}]  {task.title}{date_str}")
+            info.setStyleSheet("font-size:13px;")
+            info.setWordWrap(False)
+            row_lay.addWidget(info, 1)
+
+            restore_btn = QPushButton("恢复")
+            restore_btn.setFixedWidth(52)
+            restore_btn.setStyleSheet(
+                "background:#4CAF50; color:white; border:none; border-radius:4px; padding:3px 6px;"
+            )
+            restore_btn.clicked.connect(lambda _, tid=task.id: self._restore_task(tid))
+            row_lay.addWidget(restore_btn)
+
+            del_btn = QPushButton("彻底删除")
+            del_btn.setFixedWidth(68)
+            del_btn.setStyleSheet(
+                "background:#EF5350; color:white; border:none; border-radius:4px; padding:3px 6px;"
+            )
+            del_btn.clicked.connect(lambda _, tid=task.id: self._hard_delete_task(tid))
+            row_lay.addWidget(del_btn)
+
+            self._trash_list_lay.insertWidget(self._trash_list_lay.count() - 1, row)
+
+    def _restore_task(self, task_id: str):
+        self._store.restore_memo(task_id)
+        self._refresh_trash()
+
+    def _hard_delete_task(self, task_id: str):
+        self._store.hard_delete_memo(task_id)
+        self._refresh_trash()
+
+    def _clear_all_deleted(self):
+        deleted = [t for t in self._store.memo_tasks if t.deleted]
+        if not deleted:
+            return
+        ret = QMessageBox.warning(
+            self, "确认清空",
+            f"将彻底删除 {len(deleted)} 条任务，操作不可撤销。\n确定继续吗？",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.Cancel,
+        )
+        if ret != QMessageBox.StandardButton.Yes:
+            return
+        for task in deleted:
+            self._store.hard_delete_memo(task.id)
+        self._refresh_trash()
+
     def _apply(self):
         s = self._store.settings
         s.startup_with_windows = self._startup_cb.isChecked()
@@ -233,6 +374,18 @@ class SettingsDialog(QDialog):
         s.alert.mode_open_file   = self._file_cb.isChecked()
         s.alert.file_path        = self._file_edit.text().strip()
         _set_startup(s.startup_with_windows)
+
+        # calendar layout
+        start_h = self._cal_start_h.value()
+        end_h   = self._cal_end_h.value()
+        if end_h <= start_h:
+            QMessageBox.warning(self, "时间范围错误",
+                                "终止时间必须大于起始时间。")
+            return
+        s.cal_hour_h  = self._cal_hour_h.value()
+        s.cal_start_h = start_h
+        s.cal_end_h   = end_h
+        s.cal_day_w   = self._cal_day_w.value()
 
         # parse template
         raw = self._tpl_edit.text().strip()

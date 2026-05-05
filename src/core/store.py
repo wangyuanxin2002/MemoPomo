@@ -12,7 +12,7 @@ from typing import List, Optional
 
 from src.core.models import (
     AppSettings, MemoTask, TimeBlock,
-    PomodoroTemplate, PomodoroSession,
+    PomodoroTemplate, PomodoroSession, StickyNote,
 )
 
 # When frozen by PyInstaller, store data next to the .exe.
@@ -29,6 +29,7 @@ CALENDAR_FILE      = DATA_DIR / "calendar.json"
 POMODORO_FILE      = DATA_DIR / "pomodoro.json"
 TEMPLATES_FILE     = DATA_DIR / "templates.json"
 WORD_PROGRESS_FILE = DATA_DIR / "word_progress.json"
+STICKY_FILE        = DATA_DIR / "sticky.json"
 
 
 def _load(path: Path, default):
@@ -99,6 +100,7 @@ class Store:
         self._sessions: List[PomodoroSession] = []
         self._templates: List[PomodoroTemplate] = []
         self._word_progress: dict = {}
+        self._stickies: List[StickyNote] = []
         self.load_all()
 
     # ------------------------------------------------------------------
@@ -122,6 +124,7 @@ class Store:
             self.save_all()
 
         self._word_progress = _load(WORD_PROGRESS_FILE, {})
+        self._stickies = [StickyNote.from_dict(d) for d in _load(STICKY_FILE, [])]
         self._sync_recurring_blocks()
 
     def save_all(self):
@@ -130,6 +133,7 @@ class Store:
         _save(CALENDAR_FILE,  [b.to_dict() for b in self._blocks])
         _save(POMODORO_FILE,  [s.to_dict() for s in self._sessions])
         _save(TEMPLATES_FILE, [t.to_dict() for t in self._templates])
+        _save(STICKY_FILE,    [s.to_dict() for s in self._stickies])
 
     # ------------------------------------------------------------------
     # Settings
@@ -165,9 +169,30 @@ class Store:
         _save(CALENDAR_FILE, [b.to_dict() for b in self._blocks])
 
     def delete_memo(self, task_id: str):
+        """Soft-delete: mark deleted=True, keep in store."""
+        for t in self._memo:
+            if t.id == task_id:
+                t.deleted = True
+                t.schedule = ""   # stop recurring block generation
+                break
+        _save(MEMO_FILE, [t.to_dict() for t in self._memo])
+        # hide recurring blocks from calendar (keep manual ones)
+        self._blocks = [b for b in self._blocks
+                        if not (b.memo_task_id == task_id and b.is_planned)]
+        _save(CALENDAR_FILE, [b.to_dict() for b in self._blocks])
+
+    def restore_memo(self, task_id: str):
+        """Restore a soft-deleted task."""
+        for t in self._memo:
+            if t.id == task_id:
+                t.deleted = False
+                break
+        _save(MEMO_FILE, [t.to_dict() for t in self._memo])
+
+    def hard_delete_memo(self, task_id: str):
+        """Permanently remove task and all linked blocks."""
         self._memo = [t for t in self._memo if t.id != task_id]
         _save(MEMO_FILE, [t.to_dict() for t in self._memo])
-        # cascade-delete all blocks linked to this task
         self._blocks = [b for b in self._blocks if b.memo_task_id != task_id]
         _save(CALENDAR_FILE, [b.to_dict() for b in self._blocks])
 
@@ -305,3 +330,26 @@ class Store:
         if correct:
             entry["correct_count"] += 1
         _save(WORD_PROGRESS_FILE, self._word_progress)
+
+    # ------------------------------------------------------------------
+    # Sticky notes
+    # ------------------------------------------------------------------
+
+    @property
+    def stickies(self) -> List[StickyNote]:
+        return self._stickies
+
+    def add_sticky(self, note: StickyNote):
+        self._stickies.append(note)
+        _save(STICKY_FILE, [s.to_dict() for s in self._stickies])
+
+    def update_sticky(self, note: StickyNote):
+        for i, s in enumerate(self._stickies):
+            if s.id == note.id:
+                self._stickies[i] = note
+                break
+        _save(STICKY_FILE, [s.to_dict() for s in self._stickies])
+
+    def delete_sticky(self, note_id: str):
+        self._stickies = [s for s in self._stickies if s.id != note_id]
+        _save(STICKY_FILE, [s.to_dict() for s in self._stickies])

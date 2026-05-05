@@ -11,9 +11,43 @@ from PyQt6.QtWidgets import (
     QSizePolicy, QApplication, QMenu, QSpinBox,
     QComboBox, QDateEdit, QTimeEdit, QFormLayout,
 )
-from PyQt6.QtCore import Qt, pyqtSignal, QMimeData, QPoint, QDate, QTime
-from PyQt6.QtGui import QDrag, QPixmap, QPainter, QColor, QFont, QAction
+from PyQt6.QtCore import Qt, pyqtSignal, QMimeData, QPoint, QDate, QTime, QTimer
+from PyQt6.QtGui import QDrag, QPixmap, QPainter, QColor, QFont, QAction, QFontMetrics
 from datetime import datetime as _dt
+
+
+class ElidedLabel(QLabel):
+    """QLabel that elides text with '…' when width is too small."""
+    def __init__(self, text: str = "", parent=None):
+        super().__init__(parent)
+        self._full_text = text
+        self.setTextInteractionFlags(Qt.TextInteractionFlag.NoTextInteraction)
+        self.setSizePolicy(
+            QSizePolicy.Policy.Expanding,
+            QSizePolicy.Policy.Preferred,
+        )
+
+    def set_full_text(self, text: str):
+        self._full_text = text
+        self._elide()
+
+    def minimumSizeHint(self):
+        # Return zero minimum width so layout is free to shrink us
+        hint = super().minimumSizeHint()
+        hint.setWidth(0)
+        return hint
+
+    def resizeEvent(self, ev):
+        super().resizeEvent(ev)
+        self._elide()
+
+    def _elide(self):
+        fm = QFontMetrics(self.font())
+        elided = fm.elidedText(
+            self._full_text, Qt.TextElideMode.ElideRight, max(self.width(), 0)
+        )
+        super().setText(elided)
+        self.setToolTip(self._full_text if elided != self._full_text else "")
 
 
 def _lighten_hex(hex_color: str, factor: float = 0.45) -> str:
@@ -68,16 +102,37 @@ class TaskCard(QFrame):
         lay.setContentsMargins(6, 4, 6, 4)
         lay.setSpacing(2)
 
-        # title row
+        # parse creation time once
+        _date_short = ""
+        _date_full  = ""
+        if self.task.created_at:
+            try:
+                _dt_obj    = _dt.fromisoformat(self.task.created_at)
+                _date_short = f"{_dt_obj.month}.{_dt_obj.day}"
+                _date_full  = _dt_obj.strftime("%Y年%m月%d日 %H:%M 创建")
+            except Exception:
+                pass
+
+        # title row: [title elided] [date] [✓] [✕]
         row = QHBoxLayout()
-        self._lbl = QLabel(self.task.title)
+        row.setSpacing(4)
+
+        self._lbl = ElidedLabel(self.task.title)
         font = self._lbl.font()
         if self.task.done:
             font.setStrikeOut(True)
             self._lbl.setStyleSheet(f"color:{PALETTE['text_sub']};")
         self._lbl.setFont(font)
-        self._lbl.setWordWrap(True)
         row.addWidget(self._lbl, 1)
+
+        if _date_short:
+            date_lbl = QLabel(_date_short)
+            date_lbl.setStyleSheet(
+                f"color:{PALETTE['text_sub']};font-size:10px;"
+            )
+            date_lbl.setToolTip(_date_full)
+            date_lbl.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignRight)
+            row.addWidget(date_lbl)
 
         done_btn = QPushButton("✓")
         done_btn.setFixedSize(24, 24)
@@ -107,29 +162,11 @@ class TaskCard(QFrame):
 
         lay.addLayout(row)
 
+        # note row — elided, single line
         if self.task.note:
-            note = QLabel(self.task.note)
-            note.setStyleSheet(f"color:{PALETTE['text_sub']};font-size:11px;")
-            note.setWordWrap(True)
-            lay.addWidget(note)
-
-        # creation time — short form "M.D", full form in tooltip
-        if self.task.created_at:
-            try:
-                dt = _dt.fromisoformat(self.task.created_at)
-                short = f"{dt.month}.{dt.day}"
-                full  = dt.strftime("%Y年%m月%d日 %H:%M 创建")
-            except Exception:
-                short = ""
-                full  = ""
-            if short:
-                time_lbl = QLabel(short)
-                time_lbl.setStyleSheet(
-                    f"color:{PALETTE['text_sub']};font-size:10px;"
-                )
-                time_lbl.setAlignment(Qt.AlignmentFlag.AlignRight)
-                time_lbl.setToolTip(full)
-                lay.addWidget(time_lbl)
+            note_lbl = ElidedLabel(self.task.note)
+            note_lbl.setStyleSheet(f"color:{PALETTE['text_sub']};font-size:11px;")
+            lay.addWidget(note_lbl)
 
     # --- Drag support ---
 
@@ -181,7 +218,8 @@ class TaskCard(QFrame):
 class QuadrantPanel(QFrame):
     """Single quadrant cell with a drop zone."""
 
-    task_dropped = pyqtSignal(str, int)   # task_id, new_quadrant
+    task_dropped    = pyqtSignal(str, int)   # task_id, new_quadrant
+    delete_requested_ext = pyqtSignal(str)   # task_id → let MemoWidget handle undo
 
     def __init__(self, quadrant: int, parent=None):
         super().__init__(parent)
@@ -294,15 +332,14 @@ class QuadrantPanel(QFrame):
                 self._refresh()
 
     def _on_delete(self, task_id: str):
-        if self._store:
-            self._store.delete_memo(task_id)
-        # remove card from layout
+        # Remove from UI immediately; MemoWidget handles store + undo
         for i in range(self._card_layout.count()):
             w = self._card_layout.itemAt(i).widget()
             if isinstance(w, TaskCard) and w.task.id == task_id:
                 self._card_layout.takeAt(i)
                 w.deleteLater()
                 break
+        self.delete_requested_ext.emit(task_id)
 
     def _on_toggle_done(self, task_id: str):
         if not self._store:
@@ -341,7 +378,8 @@ class QuadrantPanel(QFrame):
         if not self._store:
             return
         self.clear_cards()
-        tasks = [t for t in self._store.memo_tasks if t.quadrant == self.quadrant]
+        tasks = [t for t in self._store.memo_tasks
+                 if t.quadrant == self.quadrant and not t.deleted]
         # sort by created_at descending (newest first within each group)
         tasks.sort(key=lambda t: t.created_at or "", reverse=True)
         for t in tasks:
@@ -486,6 +524,8 @@ class MemoWidget(QWidget):
     (the calendar widget listens for the same MIME_TYPE).
     """
 
+    _UNDO_SECONDS = 5   # seconds before deletion is committed to disk
+
     def __init__(self, store: Store, parent=None):
         super().__init__(parent)
         self._store = store
@@ -497,20 +537,27 @@ class MemoWidget(QWidget):
         grid = QGridLayout(self)
         grid.setSpacing(8)
         grid.setContentsMargins(0, 0, 0, 0)
+        grid.setColumnStretch(0, 1)
+        grid.setColumnStretch(1, 1)
 
         for q in range(1, 5):
             panel = QuadrantPanel(q)
             panel.set_store(self._store)
             panel.task_dropped.connect(self._on_task_dropped)
+            panel.delete_requested_ext.connect(self._on_delete)
             row, col = divmod(q - 1, 2)
             grid.addWidget(panel, row, col)
             self._panels[q] = panel
         self._apply_colors()
 
+    def _on_delete(self, task_id: str):
+        self._store.delete_memo(task_id)
+
     def _load(self):
         for q, panel in self._panels.items():
             panel.clear_cards()
-            tasks = [t for t in self._store.memo_tasks if t.quadrant == q]
+            tasks = [t for t in self._store.memo_tasks
+                     if t.quadrant == q and not t.deleted]
             tasks.sort(key=lambda t: t.created_at or "", reverse=True)
             for t in tasks:
                 if not t.done:

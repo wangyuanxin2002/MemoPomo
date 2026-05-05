@@ -18,6 +18,7 @@ from src.ui.memo_widget import MemoWidget
 from src.ui.pomodoro_widget import PomodoroWidget
 from src.ui.floaty_window import FloatyWindow
 from src.ui.settings_dialog import SettingsDialog
+from src.ui.sticky_window import StickyWindow
 from src.ui.theme import PALETTE
 
 
@@ -140,6 +141,7 @@ class MainWindow(QMainWindow):
         # track snoozed blocks: block_id → datetime when to re-alert
         self._snoozed: dict[str, datetime] = {}
 
+        self._sticky_win: StickyWindow | None = None
         self._build()
         self._setup_floaty()
         self._setup_reminder_poll()
@@ -189,21 +191,27 @@ class MainWindow(QMainWindow):
         self._cal = CalendarWidget(self._store)
         left_lay.addWidget(self._cal, 1)
 
-        root.addWidget(left, 3)
+        root.addWidget(left, 9)
 
         # ---- Right pane: memo ----
         right = QWidget()
         right_lay = QVBoxLayout(right)
         right_lay.setContentsMargins(0, 0, 0, 0)
 
+        title_row = QHBoxLayout()
         memo_title = QLabel("备忘录 · 四象限")
         memo_title.setStyleSheet("font-size:14px; font-weight:bold;")
-        right_lay.addWidget(memo_title)
+        title_row.addWidget(memo_title, 1)
+        sticky_btn = QPushButton("便利贴")
+        sticky_btn.setProperty("flat", True)
+        sticky_btn.clicked.connect(self._open_sticky)
+        title_row.addWidget(sticky_btn)
+        right_lay.addLayout(title_row)
 
         self._memo = MemoWidget(self._store)
         right_lay.addWidget(self._memo, 1)
 
-        root.addWidget(right, 2)
+        root.addWidget(right, 11)
 
         # status bar
         self.statusBar().showMessage("就绪")
@@ -329,6 +337,13 @@ class MainWindow(QMainWindow):
         self.statusBar().showMessage(
             f"番茄钟完成：{block.title}  {block.start_time}–{block.end_time}", 5000
         )
+
+    def _open_sticky(self):
+        if self._sticky_win is None or not self._sticky_win.isVisible():
+            self._sticky_win = StickyWindow(self._store)
+        self._sticky_win.show()
+        self._sticky_win.raise_()
+        self._sticky_win.activateWindow()
 
     def _open_settings(self):
         dlg = SettingsDialog(self._store, self)

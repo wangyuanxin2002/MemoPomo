@@ -32,6 +32,7 @@ class MemoTask:
     note: str = ""
     quadrant: int = 2          # 1-4
     done: bool = False
+    deleted: bool = False
     created_at: str = field(default_factory=lambda: datetime.now().isoformat())
     # Recurring schedule — empty string means no schedule
     # Format: "daily|HH:MM|DUR_MIN|YYYY-MM-DD"
@@ -130,6 +131,28 @@ class PomodoroSession:
 
 
 # ---------------------------------------------------------------------------
+# Sticky notes
+# ---------------------------------------------------------------------------
+
+@dataclass
+class StickyNote:
+    id: str = field(default_factory=new_id)
+    title: str = ""
+    body: str = ""
+    pinned: bool = False
+    collapsed: bool = False
+    card_height: int = 0          # 0 = auto; >0 = user-set px height
+    created_at: str = field(default_factory=lambda: datetime.now().isoformat())
+
+    def to_dict(self) -> dict:
+        return asdict(self)
+
+    @classmethod
+    def from_dict(cls, d: dict) -> "StickyNote":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+
+# ---------------------------------------------------------------------------
 # App settings
 # ---------------------------------------------------------------------------
 
@@ -156,6 +179,11 @@ class AppSettings:
     default_template_id: str = ""
     alert: AlertSettings = field(default_factory=AlertSettings)
     floaty_pos: list = field(default_factory=lambda: [100, 100])   # [x, y]
+    # calendar display settings
+    cal_hour_h: int = 64      # pixels per hour in week/day view
+    cal_day_w: int = 120      # pixels per day column in week view
+    cal_start_h: int = 0      # first hour shown (0-23)
+    cal_end_h: int = 24       # last hour shown exclusive (1-24)
     # quadrant header colours (user-customisable)
     quadrant_colors: list = field(default_factory=lambda: [
         "#EF9A9A",   # Q1 重要且紧急

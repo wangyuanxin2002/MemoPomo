@@ -21,11 +21,11 @@ from calendar import monthcalendar
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel,
     QPushButton, QScrollArea, QFrame, QDialog,
-    QDialogButtonBox, QLineEdit, QTimeEdit, QFormLayout,
+    QDialogButtonBox, QLineEdit, QFormLayout,
     QComboBox, QStackedWidget, QGridLayout, QSizePolicy,
     QSpinBox,
 )
-from PyQt6.QtCore import Qt, pyqtSignal, QRect, QPoint, QTime, QMimeData, QSize, QTimer
+from PyQt6.QtCore import Qt, pyqtSignal, QRect, QPoint, QMimeData, QSize, QTimer
 from PyQt6.QtGui import QPainter, QColor, QPen, QBrush, QDrag, QFont
 
 from src.core.models import TimeBlock, MemoTask
@@ -34,11 +34,11 @@ from src.ui.theme import PALETTE
 from src.ui.memo_widget import MIME_TYPE
 
 # ── grid constants ──────────────────────────────────────────────────────────
-HOUR_H  = 64     # pixels per hour
+HOUR_H  = 64     # pixels per hour (default; overridden by store settings)
 DAY_W   = 120    # pixels per day column (week view)
 TIME_W  = 50     # left time-label column
-START_H = 0
-END_H   = 24
+START_H = 0      # default start hour
+END_H   = 24     # default end hour
 
 WEEK_HEADERS = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
 
@@ -55,15 +55,15 @@ BLOCK_MIME = "application/x-calblock-id"
 
 # ── helpers ──────────────────────────────────────────────────────────────────
 
-def _hm_to_y(hm: str) -> float:
+def _hm_to_y(hm: str, hour_h: int = HOUR_H, start_h: int = START_H) -> float:
     h, m = map(int, hm.split(":"))
-    return (h - START_H) * HOUR_H + m * HOUR_H / 60
+    return (h - start_h) * hour_h + m * hour_h / 60
 
 
-def _y_to_hm(y: float, snap: bool = False) -> str:
-    total_min = int(y * 60 / HOUR_H) + START_H * 60
+def _y_to_hm(y: float, snap: bool = False,
+             hour_h: int = HOUR_H, start_h: int = START_H) -> str:
+    total_min = int(y * 60 / hour_h) + start_h * 60
     if snap:
-        # snap to nearest 15-minute mark
         total_min = round(total_min / 15) * 15
     total_min = max(0, min(23 * 60 + 59, total_min))
     return f"{total_min // 60:02d}:{total_min % 60:02d}"
@@ -115,15 +115,18 @@ def _block_label(block: TimeBlock) -> str:
 # ── BlockItem ────────────────────────────────────────────────────────────────
 
 class BlockItem:
-    def __init__(self, block: TimeBlock, col: int, day_w: int = DAY_W):
-        self.block = block
-        self.col   = col
-        self._day_w = day_w
+    def __init__(self, block: TimeBlock, col: int, day_w: int = DAY_W,
+                 hour_h: int = HOUR_H, start_h: int = START_H):
+        self.block   = block
+        self.col     = col
+        self._day_w  = day_w
+        self._hour_h = hour_h
+        self._start_h = start_h
 
     def rect(self) -> QRect:
         x = TIME_W + self.col * self._day_w + 2
-        y = int(_hm_to_y(self.block.start_time))
-        h = max(16, int(_hm_to_y(self.block.end_time)) - y)
+        y = int(_hm_to_y(self.block.start_time, self._hour_h, self._start_h))
+        h = max(16, int(_hm_to_y(self.block.end_time, self._hour_h, self._start_h)) - y)
         return QRect(x, y, self._day_w - 4, h)
 
     def resize_handle(self) -> QRect:
@@ -132,6 +135,26 @@ class BlockItem:
 
 
 # ── Dialogs ──────────────────────────────────────────────────────────────────
+
+class _SnapMinuteSpinBox(QSpinBox):
+    """Minutes spinbox: step snaps to next/prev 15-min boundary first."""
+    def stepBy(self, steps: int):
+        v = self.value()
+        if steps > 0:
+            # snap up to next 15-min boundary, then continue in 15-min steps
+            snapped = (v // 15 + 1) * 15
+            if snapped == v + 15:
+                # already on a boundary — just add 15
+                self.setValue(min(self.maximum(), v + 15))
+            else:
+                self.setValue(min(self.maximum(), snapped))
+        else:
+            # snap down to previous 15-min boundary
+            if v % 15 == 0:
+                self.setValue(max(self.minimum(), v - 15))
+            else:
+                self.setValue((v // 15) * 15)
+
 
 class BlockEditDialog(QDialog):
     def __init__(self, block: TimeBlock, tasks: list[MemoTask], parent=None):
@@ -146,15 +169,27 @@ class BlockEditDialog(QDialog):
         self._title = QLineEdit(block.title)
         form.addRow("标题", self._title)
 
-        self._start = QTimeEdit(QTime.fromString(block.start_time, "HH:mm"))
-        self._start.setDisplayFormat("HH:mm")
-        self._start.timeChanged.connect(self._sync_duration)
-        form.addRow("开始", self._start)
+        sh, sm = map(int, block.start_time.split(":"))
+        self._start_h = QSpinBox()
+        self._start_h.setRange(0, 23)
+        self._start_h.setValue(sh)
+        self._start_h.setSuffix(" 时")
+        self._start_m = _SnapMinuteSpinBox()
+        self._start_m.setRange(0, 59)
+        self._start_m.setValue(sm)
+        self._start_m.setSuffix(" 分")
+        start_row = QHBoxLayout()
+        start_row.addWidget(self._start_h)
+        start_row.addWidget(self._start_m)
+        form.addRow("开始", start_row)
 
+        raw_dur = _duration_min(block.start_time, block.end_time)
+        snapped_dur = max(15, round(raw_dur / 15) * 15)
         self._dur = QSpinBox()
-        self._dur.setRange(1, 23 * 60)
+        self._dur.setRange(15, 23 * 60)
+        self._dur.setSingleStep(15)
         self._dur.setSuffix(" 分钟")
-        self._dur.setValue(_duration_min(block.start_time, block.end_time))
+        self._dur.setValue(snapped_dur)
         form.addRow("持续时间", self._dur)
 
         self._task_combo = QComboBox()
@@ -177,9 +212,6 @@ class BlockEditDialog(QDialog):
             self._on_delete)
         form.addRow(btns)
 
-    def _sync_duration(self):
-        pass  # keep duration as-is when start changes
-
     def _on_delete(self):
         self._deleted = True
         self.done(QDialog.DialogCode.Accepted)
@@ -189,7 +221,7 @@ class BlockEditDialog(QDialog):
 
     def apply_to(self, block: TimeBlock):
         block.title        = self._title.text().strip()
-        block.start_time   = self._start.time().toString("HH:mm")
+        block.start_time   = f"{self._start_h.value():02d}:{self._start_m.value():02d}"
         block.end_time     = _add_min(block.start_time, self._dur.value())
         block.memo_task_id = self._task_combo.currentData()
 
@@ -282,11 +314,15 @@ class TimeGrid(QWidget):
     memo_dropped   = pyqtSignal(str, str, str)    # task_id, date_str, hm
 
     def __init__(self, dates: list[date], store: Store,
-                 day_w: int = DAY_W, parent=None):
+                 day_w: int = DAY_W, parent=None,
+                 hour_h: int = HOUR_H, start_h: int = START_H, end_h: int = END_H):
         super().__init__(parent)
-        self._dates  = dates
-        self._store  = store
-        self._day_w  = day_w
+        self._dates   = dates
+        self._store   = store
+        self._day_w   = day_w
+        self._hour_h  = hour_h
+        self._start_h = start_h
+        self._end_h   = end_h
         self._items: list[BlockItem] = []
 
         self._press_pos:   QPoint | None   = None
@@ -296,7 +332,7 @@ class TimeGrid(QWidget):
         self._ghost_rect:  QRect | None    = None  # visual while dragging
 
         self.setAcceptDrops(True)
-        total_h = (END_H - START_H) * HOUR_H
+        total_h = (end_h - start_h) * hour_h
         self.setFixedSize(TIME_W + day_w * len(dates), total_h)
 
     def set_items(self, items: list[BlockItem]):
@@ -308,7 +344,7 @@ class TimeGrid(QWidget):
     def paintEvent(self, _):
         p = QPainter(self)
         p.setRenderHint(QPainter.RenderHint.Antialiasing)
-        total_h = (END_H - START_H) * HOUR_H
+        total_h = (self._end_h - self._start_h) * self._hour_h
         total_w = TIME_W + self._day_w * len(self._dates)
 
         p.fillRect(0, 0, total_w, total_h, QColor(PALETTE["surface"]))
@@ -316,10 +352,10 @@ class TimeGrid(QWidget):
         # hour grid lines + labels
         pen = QPen(QColor(PALETTE["border"]), 1)
         p.setPen(pen)
-        for h in range(START_H, END_H + 1):
-            y = (h - START_H) * HOUR_H
+        for h in range(self._start_h, self._end_h + 1):
+            y = (h - self._start_h) * self._hour_h
             p.drawLine(TIME_W, y, total_w, y)
-            if h < END_H:
+            if h < self._end_h:
                 p.drawText(0, y + 2, TIME_W - 4, 20,
                            Qt.AlignmentFlag.AlignRight, f"{h:02d}:00")
 
@@ -387,10 +423,12 @@ class TimeGrid(QWidget):
         pos = ev.pos()
 
         if self._resize_item:
-            start_y = _hm_to_y(self._resize_item.block.start_time) + 5
+            start_y = _hm_to_y(self._resize_item.block.start_time,
+                                self._hour_h, self._start_h) + 5
             if pos.y() > start_y:
-                snapped_end = _y_to_hm(pos.y(), snap=True)
-                snapped_y   = int(_hm_to_y(snapped_end))
+                snapped_end = _y_to_hm(pos.y(), snap=True,
+                                        hour_h=self._hour_h, start_h=self._start_h)
+                snapped_y   = int(_hm_to_y(snapped_end, self._hour_h, self._start_h))
                 r = self._resize_item.rect()
                 self._ghost_rect = QRect(r.left(), r.top(),
                                          r.width(), snapped_y - r.top())
@@ -402,8 +440,9 @@ class TimeGrid(QWidget):
                 return
             # compute ghost position with snap
             raw_top_y   = pos.y() - self._drag_offset.y()
-            snapped_hm  = _y_to_hm(raw_top_y, snap=True)
-            snapped_y   = int(_hm_to_y(snapped_hm))
+            snapped_hm  = _y_to_hm(raw_top_y, snap=True,
+                                    hour_h=self._hour_h, start_h=self._start_h)
+            snapped_y   = int(_hm_to_y(snapped_hm, self._hour_h, self._start_h))
             col         = (pos.x() - TIME_W) // self._day_w
             col         = max(0, min(len(self._dates) - 1, col))
             r           = self._active_item.rect()
@@ -420,9 +459,10 @@ class TimeGrid(QWidget):
 
         if self._resize_item:
             new_end = _y_to_hm(
-                max(_hm_to_y(self._resize_item.block.start_time) + 5,
+                max(_hm_to_y(self._resize_item.block.start_time,
+                              self._hour_h, self._start_h) + 5,
                     float(pos.y())),
-                snap=True,
+                snap=True, hour_h=self._hour_h, start_h=self._start_h,
             )
             self.block_resized.emit(self._resize_item.block.id, new_end)
             self._resize_item = None
@@ -437,7 +477,8 @@ class TimeGrid(QWidget):
                 col = (pos.x() - TIME_W) // self._day_w
                 col = max(0, min(len(self._dates) - 1, col))
                 new_date = self._dates[col].isoformat()
-                new_hm   = _y_to_hm(self._ghost_rect.top(), snap=True)
+                new_hm   = _y_to_hm(self._ghost_rect.top(), snap=True,
+                                     hour_h=self._hour_h, start_h=self._start_h)
                 self.block_moved.emit(
                     self._active_item.block.id, new_date, new_hm)
             else:
@@ -453,7 +494,8 @@ class TimeGrid(QWidget):
         col = (pos.x() - TIME_W) // self._day_w
         if 0 <= col < len(self._dates):
             self.empty_clicked.emit(self._dates[col].isoformat(),
-                                    _y_to_hm(pos.y()))
+                                    _y_to_hm(pos.y(), hour_h=self._hour_h,
+                                              start_h=self._start_h))
 
     # ── drops from MemoWidget ─────────────────────────────────────────
 
@@ -471,7 +513,8 @@ class TimeGrid(QWidget):
         if 0 <= col < len(self._dates):
             self.memo_dropped.emit(task_id,
                                    self._dates[col].isoformat(),
-                                   _y_to_hm(pos.y()))
+                                   _y_to_hm(pos.y(), hour_h=self._hour_h,
+                                             start_h=self._start_h))
         ev.acceptProposedAction()
 
 
@@ -489,21 +532,6 @@ class MonthView(QWidget):
         root = QVBoxLayout(self)
         root.setContentsMargins(0, 0, 0, 0)
         root.setSpacing(4)
-
-        nav = QHBoxLayout()
-        prev = QPushButton("← 上月")
-        prev.setProperty("flat", True)
-        prev.clicked.connect(self._prev)
-        self._lbl = QLabel()
-        self._lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        nxt = QPushButton("下月 →")
-        nxt.setProperty("flat", True)
-        nxt.clicked.connect(self._next)
-        today_btn = QPushButton("本月")
-        today_btn.clicked.connect(self._this)
-        nav.addWidget(prev); nav.addWidget(self._lbl, 1)
-        nav.addWidget(nxt);  nav.addWidget(today_btn)
-        root.addLayout(nav)
 
         # day-of-week header
         hdr = QHBoxLayout()
@@ -534,7 +562,6 @@ class MonthView(QWidget):
         self.refresh()
 
     def refresh(self):
-        self._lbl.setText(self._ref_date.strftime("%Y年%m月"))
         # clear grid
         while self._grid.count():
             item = self._grid.takeAt(0)
@@ -646,6 +673,7 @@ class CalendarWidget(QWidget):
 
         today_btn = QPushButton("今天")
         today_btn.setStyleSheet("QPushButton { padding: 4px 8px; }")
+        today_btn.clicked.connect(self._go_today)
 
         bar.addWidget(self._prev_btn)
         bar.addWidget(self._period_lbl, 1)
@@ -748,10 +776,22 @@ class CalendarWidget(QWidget):
         else:
             self._month_view._ref_date = self._ref_date
             self._month_view.refresh()
+            self._period_lbl.setText(self._ref_date.strftime("%Y年%m月"))
             self._stack.setCurrentWidget(self._month_view)
 
+    def _cal_settings(self):
+        s = self._store.settings
+        return (
+            getattr(s, "cal_hour_h",  HOUR_H),
+            getattr(s, "cal_start_h", START_H),
+            getattr(s, "cal_end_h",   END_H),
+            getattr(s, "cal_day_w",   DAY_W),
+        )
+
     def _make_grid(self, dates: list[date], day_w: int) -> TimeGrid:
-        g = TimeGrid(dates, self._store, day_w)
+        hour_h, start_h, end_h, _ = self._cal_settings()
+        g = TimeGrid(dates, self._store, day_w,
+                     hour_h=hour_h, start_h=start_h, end_h=end_h)
         g.block_clicked.connect(self._on_block_clicked)
         g.block_moved.connect(self._on_block_moved)
         g.block_resized.connect(self._on_block_resized)
@@ -775,18 +815,24 @@ class CalendarWidget(QWidget):
                 if d == today else ""
             )
 
+        hour_h, start_h, end_h, day_w = self._cal_settings()
+        for lbl in self._day_labels:
+            lbl.setFixedWidth(day_w)
         blocks = self._store.blocks_for_week(date_strs)
-        items  = [BlockItem(b, date_strs.index(b.date), DAY_W) for b in blocks]
+        items  = [BlockItem(b, date_strs.index(b.date), day_w,
+                            hour_h=hour_h, start_h=start_h)
+                  for b in blocks]
 
         # replace grid widget
         _saved_scroll = self._week_scroll.verticalScrollBar().value()
         if self._week_grid:
             self._week_grid.deleteLater()
-        self._week_grid = self._make_grid(dates, DAY_W)
+        self._week_grid = self._make_grid(dates, day_w)
         self._week_grid.set_items(items)
         self._week_scroll.setWidget(self._week_grid)
+        default_scroll = max(0, (8 - start_h)) * hour_h
         self._week_scroll.verticalScrollBar().setValue(
-            _saved_scroll if _saved_scroll > 0 else 8 * HOUR_H
+            _saved_scroll if _saved_scroll > 0 else default_scroll
         )
         self._dates     = dates
         self._date_strs = date_strs
@@ -811,8 +857,10 @@ class CalendarWidget(QWidget):
                 "font-weight:bold;font-size:14px;"
             )
 
+        hour_h, start_h, end_h, _ = self._cal_settings()
         blocks = [b for b in self._store.time_blocks if b.date == date_str]
-        items  = [BlockItem(b, 0, day_w) for b in blocks]
+        items  = [BlockItem(b, 0, day_w, hour_h=hour_h, start_h=start_h)
+                  for b in blocks]
 
         _saved_scroll = self._day_scroll.verticalScrollBar().value()
         if self._day_grid:
@@ -820,8 +868,9 @@ class CalendarWidget(QWidget):
         self._day_grid = self._make_grid([d], day_w)
         self._day_grid.set_items(items)
         self._day_scroll.setWidget(self._day_grid)
+        default_scroll = max(0, (8 - start_h)) * hour_h
         self._day_scroll.verticalScrollBar().setValue(
-            _saved_scroll if _saved_scroll > 0 else 8 * HOUR_H
+            _saved_scroll if _saved_scroll > 0 else default_scroll
         )
         self._dates     = [d]
         self._date_strs = [date_str]
