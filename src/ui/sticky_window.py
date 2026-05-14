@@ -14,6 +14,7 @@ from PyQt6.QtGui import QFont, QCursor
 
 from src.core.models import StickyNote
 from src.core.store import Store
+from src.ui.widgets import AutoListPlainTextEdit
 
 
 _PIN_ON     = "📌 已置顶"
@@ -147,7 +148,7 @@ class StickyCard(QFrame):
         root.addWidget(self._title_edit)
 
         # ── body (hidden when collapsed) ───────────────────────────────
-        self._body_edit = QPlainTextEdit(self._note.body)
+        self._body_edit = AutoListPlainTextEdit(self._note.body)
         self._body_edit.setPlaceholderText("在此输入内容…")
         self._body_edit.setMinimumHeight(50)
         self._body_edit.setSizePolicy(

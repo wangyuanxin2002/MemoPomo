@@ -11,6 +11,7 @@ from PyQt6.QtWidgets import (
     QSizePolicy, QApplication, QMenu, QSpinBox,
     QComboBox, QDateEdit, QTimeEdit, QFormLayout,
 )
+from src.ui.widgets import AutoListTextEdit
 from PyQt6.QtCore import Qt, pyqtSignal, QMimeData, QPoint, QDate, QTime, QTimer
 from PyQt6.QtGui import QDrag, QPixmap, QPainter, QColor, QFont, QAction, QFontMetrics
 from datetime import datetime as _dt
@@ -48,6 +49,42 @@ class ElidedLabel(QLabel):
         )
         super().setText(elided)
         self.setToolTip(self._full_text if elided != self._full_text else "")
+
+
+class MultiLineElidedLabel(QLabel):
+    """
+    Displays multi-line text where each line is independently elided with '…'
+    if it exceeds the available width. Line count is unlimited.
+    """
+    def __init__(self, text: str = "", parent=None):
+        super().__init__(parent)
+        self._full_text = text
+        self.setTextInteractionFlags(Qt.TextInteractionFlag.NoTextInteraction)
+        self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
+        self.setWordWrap(False)
+
+    def minimumSizeHint(self):
+        hint = super().minimumSizeHint()
+        hint.setWidth(0)
+        return hint
+
+    def resizeEvent(self, ev):
+        super().resizeEvent(ev)
+        self._rebuild()
+
+    def set_full_text(self, text: str):
+        self._full_text = text
+        self._rebuild()
+
+    def _rebuild(self):
+        fm = QFontMetrics(self.font())
+        w = max(self.width(), 0)
+        elided_lines = [
+            fm.elidedText(line, Qt.TextElideMode.ElideRight, w)
+            for line in self._full_text.splitlines()
+        ]
+        super().setText("\n".join(elided_lines))
+        self.setToolTip(self._full_text)
 
 
 def _lighten_hex(hex_color: str, factor: float = 0.45) -> str:
@@ -162,9 +199,9 @@ class TaskCard(QFrame):
 
         lay.addLayout(row)
 
-        # note row — elided, single line
+        # note row — each line elided independently, unlimited lines
         if self.task.note:
-            note_lbl = ElidedLabel(self.task.note)
+            note_lbl = MultiLineElidedLabel(self.task.note)
             note_lbl.setStyleSheet(f"color:{PALETTE['text_sub']};font-size:11px;")
             lay.addWidget(note_lbl)
 
@@ -487,16 +524,30 @@ class AddTaskDialog(QDialog):
         self.setWindowTitle(
             f"{'编辑' if is_edit else '添加'}任务 – {QUADRANT_COLORS[quadrant][2]}"
         )
-        self.setMinimumWidth(320)
+        self.setMinimumSize(360, 300)
+        self.resize(420, 460)
+        bg_color = QUADRANT_COLORS[quadrant][0]
+        self.setStyleSheet(f"""
+            AddTaskDialog {{ background: {bg_color}; }}
+            QLabel {{ background: transparent; color: #1A1A1A; }}
+            QLineEdit, QTextEdit {{
+                background: white;
+                color: #1A1A1A;
+                border: 1px solid #bbb;
+                border-radius: 4px;
+                padding: 4px;
+            }}
+        """)
         lay = QVBoxLayout(self)
         lay.addWidget(QLabel("任务名称"))
         self._title = QLineEdit(prefill_title)
         lay.addWidget(self._title)
         lay.addWidget(QLabel("备注（可选）"))
-        self._note = QTextEdit()
-        self._note.setFixedHeight(72)
+        self._note = AutoListTextEdit()
+        self._note.setMinimumHeight(120)
+        self._note.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self._note.setPlainText(prefill_note)
-        lay.addWidget(self._note)
+        lay.addWidget(self._note, 1)
         btns = QDialogButtonBox(
             QDialogButtonBox.StandardButton.Ok |
             QDialogButtonBox.StandardButton.Cancel

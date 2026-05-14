@@ -7,9 +7,10 @@ from PyQt6.QtWidgets import (
     QMainWindow, QWidget, QHBoxLayout, QVBoxLayout,
     QPushButton, QLabel, QDialog, QVBoxLayout as QVBox,
     QHBoxLayout as QHBox, QSpinBox, QApplication,
+    QSystemTrayIcon, QMenu,
 )
 from PyQt6.QtCore import Qt, QTimer
-from PyQt6.QtGui import QCloseEvent, QFont
+from PyQt6.QtGui import QCloseEvent, QFont, QIcon, QPixmap, QPainter, QColor
 
 from src.core.models import TimeBlock
 from src.core.store import Store
@@ -127,6 +128,60 @@ class BlockAlertDialog(QDialog):
 
 
 # ---------------------------------------------------------------------------
+# Timer-finished fullscreen notice
+# ---------------------------------------------------------------------------
+
+class TimerFinishedDialog(QDialog):
+    """Fullscreen notice shown when pomodoro or countdown finishes."""
+
+    def __init__(self, parent=None):
+        super().__init__(
+            None,
+            Qt.WindowType.Window |
+            Qt.WindowType.WindowStaysOnTopHint |
+            Qt.WindowType.FramelessWindowHint,
+        )
+        screen = QApplication.primaryScreen().geometry()
+        self.setGeometry(screen)
+        self.showFullScreen()
+        self.setStyleSheet(f"background:{PALETTE['accent_light']};")
+
+        root = QVBox(self)
+        root.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        root.setSpacing(28)
+        root.setContentsMargins(120, 80, 120, 80)
+
+        icon = QLabel("✅")
+        icon.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        icon.setStyleSheet("font-size:72px;")
+        root.addWidget(icon)
+
+        msg = QLabel("计时结束！")
+        f = QFont()
+        f.setPointSize(32)
+        f.setBold(True)
+        msg.setFont(f)
+        msg.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        root.addWidget(msg)
+
+        sub = QLabel("请休息片刻，再重新开始计时")
+        sub.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        sub.setStyleSheet(f"font-size:18px; color:{PALETTE['text_sub']};")
+        root.addWidget(sub)
+
+        root.addSpacing(20)
+
+        ok_btn = QPushButton("知道了")
+        ok_btn.setFixedHeight(52)
+        ok_btn.setStyleSheet(
+            f"background:{PALETTE['accent']}; color:white; font-size:18px;"
+            "border:none; border-radius:10px; padding:0 48px;"
+        )
+        ok_btn.clicked.connect(self.accept)
+        root.addWidget(ok_btn, 0, Qt.AlignmentFlag.AlignCenter)
+
+
+# ---------------------------------------------------------------------------
 # Main window
 # ---------------------------------------------------------------------------
 
@@ -144,6 +199,7 @@ class MainWindow(QMainWindow):
         self._sticky_win: StickyWindow | None = None
         self._build()
         self._setup_floaty()
+        self._setup_tray()
         self._setup_reminder_poll()
 
     # ------------------------------------------------------------------
@@ -299,6 +355,43 @@ class MainWindow(QMainWindow):
 
         self._pomo._start_btn.clicked.connect(self._start_floaty_updates)
         self._pomo.countdown_tick.connect(self._on_countdown_tick)
+        self._pomo.timer_finished.connect(self._on_timer_finished)
+
+    # ------------------------------------------------------------------
+    # System tray
+    # ------------------------------------------------------------------
+
+    def _setup_tray(self):
+        self._tray = QSystemTrayIcon(self._make_tray_icon(), self)
+        self._tray.setToolTip("MemoPomo | 备忘番茄")
+
+        menu = QMenu()
+        menu.addAction("打开主界面").triggered.connect(self._show_main)
+        menu.addSeparator()
+        menu.addAction("退出程序").triggered.connect(self._quit)
+        self._tray.setContextMenu(menu)
+
+        self._tray.activated.connect(self._on_tray_activated)
+        self._tray.show()
+
+    @staticmethod
+    def _make_tray_icon() -> QIcon:
+        px = QPixmap(16, 16)
+        px.fill(Qt.GlobalColor.transparent)
+        p = QPainter(px)
+        p.setRenderHint(QPainter.RenderHint.Antialiasing)
+        p.setBrush(QColor("#E53935"))
+        p.setPen(Qt.PenStyle.NoPen)
+        p.drawEllipse(1, 1, 14, 14)
+        # small green stem
+        p.setBrush(QColor("#43A047"))
+        p.drawEllipse(8, 0, 4, 4)
+        p.end()
+        return QIcon(px)
+
+    def _on_tray_activated(self, reason):
+        if reason == QSystemTrayIcon.ActivationReason.Trigger:
+            self._show_main()
 
     def _start_floaty_updates(self):
         engine = self._pomo.engine()
@@ -317,6 +410,11 @@ class MainWindow(QMainWindow):
     def _on_countdown_tick(self, time_str: str, label: str, running: bool):
         self._floaty.update_state(time_str, label, running,
                                   task_name=self._pomo.current_task_name)
+
+    def _on_timer_finished(self):
+        self._show_main()
+        dlg = TimerFinishedDialog(self)
+        dlg.exec()
 
     def _minimize_to_floaty(self):
         self.hide()
@@ -369,8 +467,20 @@ class MainWindow(QMainWindow):
 
     def _quit(self):
         self._floaty.save_pos(self._store)
+        self._tray.hide()
         QApplication.quit()
 
     def closeEvent(self, ev: QCloseEvent):
         self._floaty.save_pos(self._store)
-        ev.accept()
+        if self._store.settings.close_to_tray:
+            ev.ignore()
+            self.hide()
+            self._tray.showMessage(
+                "MemoPomo",
+                "程序仍在后台运行，点击托盘图标可重新打开。",
+                QSystemTrayIcon.MessageIcon.Information,
+                2000,
+            )
+        else:
+            self._tray.hide()
+            ev.accept()

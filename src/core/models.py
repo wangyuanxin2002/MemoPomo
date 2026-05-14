@@ -175,6 +175,7 @@ class AlertSettings:
 @dataclass
 class AppSettings:
     startup_with_windows: bool = True
+    close_to_tray: bool = False        # True=minimize to tray on close, False=exit
     snooze_minutes: int = 10           # last-used snooze value
     default_template_id: str = ""
     alert: AlertSettings = field(default_factory=AlertSettings)

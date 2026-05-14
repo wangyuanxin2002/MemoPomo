@@ -273,8 +273,8 @@ class PomodoroWidget(QWidget):
     """
 
     session_completed = pyqtSignal(object)   # TimeBlock
-    # emitted during custom countdown so FloatyWindow can update
-    countdown_tick = pyqtSignal(str, str, bool)  # time_str, label, running
+    countdown_tick    = pyqtSignal(str, str, bool)  # time_str, label, running
+    timer_finished    = pyqtSignal()         # all segments done / countdown ended
 
     def __init__(self, store: Store, parent=None):
         super().__init__(parent)
@@ -640,6 +640,7 @@ class PomodoroWidget(QWidget):
         self._cd_start   = None
         self._cd_label   = ""
         self._cd_task_id = None
+        self.timer_finished.emit()
 
         # restore normal pomodoro button wiring
         self._time_lbl.setText("25:00")
@@ -658,6 +659,7 @@ class PomodoroWidget(QWidget):
             return
         # Save immediately so the block is recorded even if the user force-quits the alert
         self._save_session_now()
+        self.timer_finished.emit()
 
         # Show word alert; reset UI only after alert is closed
         alert = WordAlert(store=self._store, standalone=False)

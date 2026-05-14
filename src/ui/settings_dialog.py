@@ -69,6 +69,10 @@ class SettingsDialog(QDialog):
         self._snooze_spin.setSuffix(" 分钟")
         gf.addRow("默认推迟时长", self._snooze_spin)
 
+        self._close_to_tray_cb = QCheckBox("关闭窗口时最小化到托盘（从托盘图标可重新打开）")
+        self._close_to_tray_cb.setChecked(s.close_to_tray)
+        gf.addRow(self._close_to_tray_cb)
+
         tabs.addTab(gen, "常规")
 
         # ---------- Tab: Alert ----------
@@ -368,6 +372,7 @@ class SettingsDialog(QDialog):
         s = self._store.settings
         s.startup_with_windows = self._startup_cb.isChecked()
         s.snooze_minutes       = self._snooze_spin.value()
+        s.close_to_tray        = self._close_to_tray_cb.isChecked()
         s.alert.mode_rest_screen = self._rest_cb.isChecked()
         s.alert.mode_open_url    = self._url_cb.isChecked()
         s.alert.url              = self._url_edit.text().strip()
